@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import { firebase, db } from "../Config/firebaseConfig";
+import { firebase } from "../Config/firebaseConfig";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function LoginPage({ navigation }) {
@@ -10,6 +11,9 @@ export default function LoginPage({ navigation }) {
   const handleLogin = async () => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
+
+      //Saving the connected user email in localstorage
+      AsyncStorage.setItem('email', email);
       
       navigation.navigate("HomePage");
     } catch (error) {

@@ -14,8 +14,10 @@ export default function SignupPage({ navigation }) {
 
   const handleSignUp = async () => {
     try {
+      //Try to sign up a new user
       await firebase.auth().createUserWithEmailAndPassword(email, password);
 
+      //Create user entity for db persistance
       const userData = {
         email: email,
         firstName: firstName,
@@ -24,6 +26,7 @@ export default function SignupPage({ navigation }) {
         memberSince: new Date().toLocaleDateString(),
       };
 
+      //Store the user in the db
       await addDoc(collection(db, "users"), userData);
 
       navigation.navigate("WelcomePage");
