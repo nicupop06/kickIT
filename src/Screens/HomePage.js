@@ -44,7 +44,7 @@ export default function HomePage({ navigation }) {
       </Text>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -53,11 +53,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  userInfo: {
-    marginTop: 20,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-  },
 });
-

@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { TouchableOpacity, View, TextInput, Button, StyleSheet, Text } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  TextInput,
+  StyleSheet,
+  Text,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { firebase, db } from "../Config/firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
@@ -71,7 +77,10 @@ export default function SignupPage({ navigation }) {
         value={lastName}
         onChangeText={setLastName}
       />
-      <TouchableOpacity style={styles.button} onPress={() => setShowDatePicker(true)}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setShowDatePicker(true)}
+      >
         <Text style={styles.buttonText}>Choose Date</Text>
       </TouchableOpacity>
       {showDatePicker && (
@@ -103,10 +112,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    width: '80%',
+    width: "80%",
     height: 40,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderRadius: 5,
     paddingLeft: 10,
     marginBottom: 20,
@@ -124,7 +133,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-  }
+  },
 });
