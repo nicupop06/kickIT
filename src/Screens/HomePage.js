@@ -109,14 +109,11 @@ export default function HomePage({ navigation }) {
           }}
         >
           <Marker
-            coordinate={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-            }}
+            coordinate={location.coords}
             title="You are here"
             description="Your current location"
           >
-            <FontAwesomeIcon name="user" size={30} color="black" />
+            <FontAwesomeIcon name="user" size={30} color="blue" />
           </Marker>
           {kbgyms.map((loc) => (
             <Marker
@@ -130,7 +127,7 @@ export default function HomePage({ navigation }) {
               <MaterialCommunityIcons
                 name="boxing-glove"
                 size={30}
-                color="red"
+                color={loc.type === 'workout' ? 'red' : 'black'}
               />
             </Marker>
           ))}
