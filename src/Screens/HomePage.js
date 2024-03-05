@@ -7,10 +7,11 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const usersRef = collection(db, "users");
 
-export default function HomePage({ navigation }) {
+export default function HomePage() {
   //For local storage
   const [email, setEmail] = useState("");
   const [user, setUser] = useState(null);
@@ -127,7 +128,7 @@ export default function HomePage({ navigation }) {
               <MaterialCommunityIcons
                 name="boxing-glove"
                 size={30}
-                color={loc.type === 'workout' ? 'red' : 'black'}
+                color={loc.type === "workout" ? "red" : "black"}
               />
             </Marker>
           ))}
