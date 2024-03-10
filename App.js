@@ -7,6 +7,7 @@ import LoginPage from "./src/Screens/LoginPage";
 import SignupPage from "./src/Screens/SignupPage";
 import HomePage from "./src/Screens/HomePage";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import TimerPage from "./src/Screens/TimerPage";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -14,6 +15,7 @@ const Drawer = createDrawerNavigator();
 const HomeDrawer = () => (
   <Drawer.Navigator>
     <Drawer.Screen name="MainPage" component={HomePage} />
+    <Drawer.Screen name="Training Timer" component={TimerPage} />
   </Drawer.Navigator>
 );
 
