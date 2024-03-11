@@ -7,7 +7,6 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const usersRef = collection(db, "users");
 
@@ -25,15 +24,16 @@ export default function HomePage() {
   useEffect(() => {
     AsyncStorage.getItem("email")
       .then((storedEmail) => {
-        setEmail(storedEmail);
         if (storedEmail) {
           getUserFromFirestore(storedEmail);
         }
+        setEmail(storedEmail);
       })
       .catch((error) => {
         alert("Error retrieving email from AsyncStorage:", error);
       });
-  }, []);
+      console.log(email);
+  }, [email]);
 
   //Ask for map permissions in order to show it from where the user is
   useEffect(() => {
