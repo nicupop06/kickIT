@@ -53,7 +53,7 @@ export default function VideosPage() {
       });
 
       // Convert the buffer to a blob
-      const blob = new Blob([fileBuffer], { type: "video/mp4" });
+      const blob = new Blob([fileBuffer], { type: "video/mp4" }); //
 
       // Create a storage reference
       const storageRef = ref(storage, `${filePath.assets[0].name}`);

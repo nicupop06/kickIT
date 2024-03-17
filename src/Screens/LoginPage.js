@@ -6,8 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { firebase } from "../Config/firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import config from "../Config/config";
+import axios from "axios";
 
 export default function LoginPage({ navigation }) {
   const [email, setEmail] = useState("");
@@ -15,14 +16,22 @@ export default function LoginPage({ navigation }) {
 
   const handleLogin = async () => {
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
-
-      //Saving the connected user email in localstorage
-      AsyncStorage.setItem("email", email);
+      const sendURL = config.getRouteUrl(config.SERVER_ROUTES.LOGIN);
+      const response = await axios.post(sendURL, {
+        email: email,
+        password: password,
+      });
 
       navigation.navigate("HomePage");
+      AsyncStorage.setItem("email", email);
     } catch (error) {
-      alert(error.message);
+      if (error.response) {
+        alert(error.response.data.error);
+      } else if (error.request) {
+        console.error(error.request);
+      } else {
+        console.error("Error", error.message);
+      }
     }
   };
 

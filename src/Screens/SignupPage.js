@@ -7,8 +7,8 @@ import {
   Text,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { firebase, db } from "../Config/firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
+import config from "../Config/config";
+import axios from "axios";
 
 export default function SignupPage({ navigation }) {
   const [firstName, setFirstName] = useState("");
@@ -20,24 +20,29 @@ export default function SignupPage({ navigation }) {
 
   const handleSignUp = async () => {
     try {
-      //Try to sign up a new user
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
-
-      //Create user entity for db persistance
       const userData = {
         email: email,
+        password: password,
         firstName: firstName,
         lastName: lastName,
         dateOfBirth: dateOfBirth.toLocaleDateString(),
         memberSince: new Date().toLocaleDateString(),
       };
 
-      //Store the user in the db
-      await addDoc(collection(db, "users"), userData);
+      const sendURL = config.getRouteUrl(config.SERVER_ROUTES.SIGNUP);
+      const response = await axios.post(sendURL, {
+        userData: userData,
+      });
 
       navigation.navigate("WelcomePage");
     } catch (error) {
-      alert(error.message);
+      if (error.response) {
+        alert(error.response.data.error);
+      } else if (error.request) {
+        console.error(error.request);
+      } else {
+        console.error("Error", error.message);
+      }
     }
   };
 
