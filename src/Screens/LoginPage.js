@@ -21,9 +21,8 @@ export default function LoginPage({ navigation }) {
         email: email,
         password: password,
       });
-
+      AsyncStorage.setItem("email", response.data.email);
       navigation.navigate("HomePage");
-      AsyncStorage.setItem("email", email);
     } catch (error) {
       if (error.response) {
         alert(error.response.data.error);

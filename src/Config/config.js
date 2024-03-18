@@ -3,6 +3,8 @@ const config = {
   SERVER_ROUTES: {
     LOGIN: "login",
     SIGNUP: "signup",
+    KGBYMS: "kbgyms",
+    USERS: "users"
   },
   getRouteUrl(route) {
     return `${this.SERVER_BASE_URL}/${route}`;

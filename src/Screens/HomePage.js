@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../Config/firebaseConfig";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
-const usersRef = collection(db, "users");
+import config from "../Config/config";
+import axios from "axios";
 
 export default function HomePage() {
   //For local storage
@@ -25,14 +24,13 @@ export default function HomePage() {
     AsyncStorage.getItem("email")
       .then((storedEmail) => {
         if (storedEmail) {
+          setEmail(storedEmail);
           getUserFromFirestore(storedEmail);
         }
-        setEmail(storedEmail);
       })
       .catch((error) => {
         alert("Error retrieving email from AsyncStorage:", error);
       });
-      console.log(email);
   }, [email]);
 
   //Ask for map permissions in order to show it from where the user is
@@ -53,21 +51,6 @@ export default function HomePage() {
       }
     })();
 
-    // Get all kick-boxing gyms in Firestore collection
-    db.collection("kbgyms")
-      .get()
-      .then((querySnapshot) => {
-        const updatedLocations = querySnapshot.docs.map((doc) => {
-          if (doc.data().coords) {
-            return { ...doc.data(), id: doc.id };
-          }
-        });
-        setKbGyms(updatedLocations);
-      })
-      .catch((error) => {
-        console.log("Error getting documents: ", error);
-      });
-
     // Set up listener to Firestore collection
     const unsubscribe = db.collection("kbgyms").onSnapshot((snapshot) => {
       const updatedLocations = snapshot.docs.map((doc) => {
@@ -83,13 +66,18 @@ export default function HomePage() {
   }, []);
 
   //Collect the whole user after email is taken from localstorage
-  const getUserFromFirestore = async (email) => {
+  const getUserFromFirestore = async (fncEmail) => {
     try {
-      const q = query(usersRef, where("email", "==", email));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        setUser(doc.data());
+      const sendURL = config.getRouteUrl(config.SERVER_ROUTES.USERS);
+      console.log(`!!!!!${fncEmail}`);
+      const response = await axios.get(sendURL, {
+        params: {
+          email: fncEmail,
+        },
       });
+      console.log(response.data.user);
+      setUser(response.data.user);
+      // console.log(user);
     } catch (error) {
       console.error("Error getting user from Firestore:", error);
     }
