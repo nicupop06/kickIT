@@ -53,7 +53,6 @@ export default function VideosPage() {
       });
 
       // Convert the buffer to a blob
-      // const blob = new Blob([fileBuffer], { type: "video/mp4" }); //
 
       const response = await fetch(fileUri);
       const blob = await response.blob();
