@@ -3,6 +3,7 @@ import {
   TouchableOpacity,
   View,
   Text,
+  TextInput,
   StyleSheet,
   SafeAreaView,
   FlatList,
@@ -16,10 +17,10 @@ import { Video } from "expo-av";
 
 export default function VideosPage() {
   const [filePath, setFilePath] = useState({});
-  const [process, setProcess] = useState("");
 
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [videoName, setVideoName] = useState('');
 
   useEffect(() => {
     fetchVideos();
@@ -47,14 +48,14 @@ export default function VideosPage() {
 
   const renderVideoItem = ({ item }) => (
     <View style={styles.videoItem}>
-    <Text>{item.name}</Text>
-    <Video
-      source={{ uri: item.url }}
-      style={{ width: 300, height: 200 }}
-      useNativeControls
-      resizeMode="contain"
-    />
-  </View>
+      <Text>{item.name}</Text>
+      <Video
+        source={{ uri: item.url }}
+        style={{ width: 300, height: 200 }}
+        useNativeControls
+        resizeMode="contain"
+      />
+    </View>
   );
 
   const pickFiles = async () => {
@@ -89,29 +90,24 @@ export default function VideosPage() {
         throw new Error("File does not exist.");
       }
 
-      // Read the file as a buffer
-      const fileBuffer = await FileSystem.readAsStringAsync(fileUri, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
       // Convert the buffer to a blob
 
       const response = await fetch(fileUri);
       const blob = await response.blob();
 
       // Create a storage reference
-      const storageRef = ref(storage, `${filePath.assets[0].name}`);
+      const storageRef = ref(storage, `${videoName}.mp4`);
 
       // Upload the file
       const uploadTask = uploadBytes(storageRef, blob);
 
       // Handle the upload task
       uploadTask
-        .then((snapshot) => {
+        .then(async (snapshot) => {
           // Upload completed successfully
           console.log("Upload complete:", snapshot);
           alert("File uploaded successfully");
-          setProcess("");
+          await fetchVideos();
         })
         .catch((error) => {
           // Handle unsuccessful uploads
@@ -129,7 +125,6 @@ export default function VideosPage() {
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Text>Choose Video</Text>
-          <Text>{process}</Text>
           <TouchableOpacity
             activieOpacity={0.5}
             style={styles.buttonStyle}
@@ -137,6 +132,13 @@ export default function VideosPage() {
           >
             <Text style={styles.buttonTextStyle}>Choose Video</Text>
           </TouchableOpacity>
+          <Text>Video Name:</Text>
+          <TextInput
+            style={styles.input}
+            value={videoName}
+            onChangeText={setVideoName}
+            placeholder="Enter video name"
+          />
           <TouchableOpacity style={styles.buttonStyle} onPress={uploadVideos}>
             <Text style={styles.buttonTextStyle}>
               Upload File on FireStorage
