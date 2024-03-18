@@ -1,19 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TouchableOpacity,
   View,
   Text,
   StyleSheet,
   SafeAreaView,
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
-import { ref, uploadBytes } from "@firebase/storage";
+import { ref, uploadBytes, listAll, getDownloadURL } from "@firebase/storage";
 import * as DocumentPicker from "expo-document-picker";
 import { storage } from "../Config/firebaseConfig";
 import * as FileSystem from "expo-file-system";
+import { Video } from "expo-av";
 
 export default function VideosPage() {
   const [filePath, setFilePath] = useState({});
   const [process, setProcess] = useState("");
+
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
+  const fetchVideos = async () => {
+    try {
+      const storageRef = ref(storage);
+      const listResult = await listAll(storageRef);
+
+      const videoUrls = await Promise.all(
+        listResult.items.map(async (itemRef) => {
+          const url = await getDownloadURL(itemRef);
+          return { name: itemRef.name, url };
+        })
+      );
+
+      setVideos(videoUrls);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+      setLoading(false);
+    }
+  };
+
+  const renderVideoItem = ({ item }) => (
+    <View style={styles.videoItem}>
+    <Text>{item.name}</Text>
+    <Video
+      source={{ uri: item.url }}
+      style={{ width: 300, height: 200 }}
+      useNativeControls
+      resizeMode="contain"
+    />
+  </View>
+  );
 
   const pickFiles = async () => {
     try {
@@ -100,6 +142,18 @@ export default function VideosPage() {
               Upload File on FireStorage
             </Text>
           </TouchableOpacity>
+
+          <Text style={{ marginTop: 20 }}>Videos from Firebase Storage:</Text>
+          {loading ? (
+            <ActivityIndicator style={{ marginTop: 10 }} />
+          ) : (
+            <FlatList
+              data={videos}
+              renderItem={renderVideoItem}
+              keyExtractor={(item) => item.name}
+              style={{ marginTop: 10 }}
+            />
+          )}
         </View>
       </SafeAreaView>
     </>
@@ -123,5 +177,12 @@ const styles = StyleSheet.create({
   buttonTextStyle: {
     color: "white",
     fontWeight: "bold",
+  },
+  videoItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    width: "100%",
+    alignItems: "center",
   },
 });
