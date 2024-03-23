@@ -10,7 +10,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import config from "../Config/config";
 import axios from "axios";
 
-export default function SignupPage({ navigation }) {
+export default function MainSignupPage({ navigation }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");

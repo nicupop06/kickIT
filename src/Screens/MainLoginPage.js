@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import config from "../Config/config";
 import axios from "axios";
 
-export default function LoginPage({ navigation }) {
+export default function MainLoginPage({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

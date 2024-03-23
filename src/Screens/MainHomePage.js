@@ -9,7 +9,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import config from "../Config/config";
 import axios from "axios";
 
-export default function HomePage() {
+export default function MainHomePage() {
   //For local storage
   const [email, setEmail] = useState("");
   const [user, setUser] = useState(null);

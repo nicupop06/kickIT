@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 
-export default function WelcomePage({ navigation }) {
+export default function MainWelcomePage({ navigation }) {
   const [loginPressed, setLoginPressed] = useState(false);
   const [signUpPressed, setSignUpPressed] = useState(false);
 
