@@ -29,7 +29,7 @@ export default function MainSignupPage({ navigation }) {
         memberSince: new Date().toLocaleDateString(),
       };
 
-      const sendURL = config.getRouteUrl(config.SERVER_ROUTES.SIGNUP);
+      const sendURL = config.getRouteUrl(config.SERVER_ROUTES.SIGNUP_USER);
       const response = await axios.post(sendURL, {
         userData: userData,
       });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../Config/firebaseConfig";
 import MapView, { Marker } from "react-native-maps";
@@ -9,7 +9,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import config from "../Config/config";
 import axios from "axios";
 
-export default function MainHomePage() {
+export default function MainHomePage({ navigation }) {
   //For local storage
   const [email, setEmail] = useState("");
   const [user, setUser] = useState(null);
@@ -64,6 +64,24 @@ export default function MainHomePage() {
     // Clean up listener on unmount
     return () => unsubscribe();
   }, []);
+
+  const handleLogout = async () => {
+    const sendURL = config.getRouteUrl(config.SERVER_ROUTES.LOGOUT);
+    try {
+      const response = await axios.post(sendURL);
+      AsyncStorage.removeItem("email");
+      console.log(`${email} logged out`);
+      navigation.navigate("WelcomePage");
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data.error);
+      } else if (error.request) {
+        console.error(error.request);
+      } else {
+        console.error("Error", error.message);
+      }
+    }
+  };
 
   //Collect the whole user after email is taken from localstorage
   const getUserFromFirestore = async (fncEmail) => {
@@ -124,6 +142,9 @@ export default function MainHomePage() {
       ) : (
         <Text style={styles.loading}>Loading...</Text>
       )}
+      <View style={styles.buttonContainer}>
+        <Button title="Log Out" onPress={handleLogout} />
+      </View>
     </View>
   );
 }
@@ -143,5 +164,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "orange",
     textAlign: "center",
+  },
+  buttonContainer: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
   },
 });

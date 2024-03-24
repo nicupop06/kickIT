@@ -10,19 +10,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import config from "../Config/config";
 import axios from "axios";
 
-export default function MainLoginPage({ navigation }) {
+export default function GymManagerLoginPage({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
-      const sendURL = config.getRouteUrl(config.SERVER_ROUTES.LOGIN_USER);
+      const sendURL = config.getRouteUrl(
+        config.SERVER_ROUTES.LOGIN_ADMINISTRATOR
+      );
       const response = await axios.post(sendURL, {
         email: email,
         password: password,
       });
       AsyncStorage.setItem("email", response.data.email);
-      navigation.navigate("HomePage");
+      navigation.navigate("GymManagerHomePage");
     } catch (error) {
       if (error.response) {
         alert(error.response.data.error);

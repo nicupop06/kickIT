@@ -19,6 +19,10 @@ export default function MainWelcomePage({ navigation }) {
     navigation.navigate("SignupPage");
   };
 
+  const handleManageGymsPress = () => {
+    navigation.navigate("GymLoginPage");
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -36,6 +40,12 @@ export default function MainWelcomePage({ navigation }) {
         onPressOut={() => setSignUpPressed(false)}
       >
         <Text style={styles.buttonText}>Sign Up</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, styles.manageGymsButton]}
+        onPress={handleManageGymsPress}
+      >
+        <Text style={styles.buttonText}>Manage Your Gyms</Text>
       </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
@@ -57,6 +67,10 @@ const styles = StyleSheet.create({
   },
   buttonPressed: {
     backgroundColor: "darkblue",
+  },
+  manageGymsButton: {
+    marginTop: 20,
+    backgroundColor: "green", // Example color, adjust as needed
   },
   buttonText: {
     color: "#fff",
