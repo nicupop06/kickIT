@@ -7,6 +7,7 @@ const config = {
     USERS: "users",
     LOGIN_ADMINISTRATOR: "login-user",
     LOGOUT: "logout",
+    SIGNUP_GYM: "signup-gym",
   },
   getRouteUrl(route) {
     return `${this.SERVER_BASE_URL}/${route}`;

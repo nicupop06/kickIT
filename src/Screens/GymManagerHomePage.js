@@ -27,24 +27,26 @@ export default function GymManagerHomePage({ navigation }) {
   };
 
   useEffect(() => {
-    AsyncStorage.getItem("email")
-      .then((storedEmail) => {
-        if (storedEmail) {
-          setEmail(storedEmail);
-          console.log(`${email} logged in`);
-          getUserFromFirestore(storedEmail);
-        }
-      })
-      .catch((error) => {
-        alert("Error retrieving email from AsyncStorage:", error);
-      });
+    async function fetchEmail() {
+      AsyncStorage.getItem("email")
+        .then((storedEmail) => {
+          if (storedEmail) {
+            setEmail(storedEmail);
+            console.log(`${email} logged in`);
+            getUserFromFirestore(storedEmail);
+          }
+        })
+        .catch((error) => {
+          alert("Error retrieving email from AsyncStorage:", error);
+        });
+    }
+    fetchEmail();
   }, [email]);
 
   //Collect the whole user after email is taken from localstorage
   const getUserFromFirestore = async (fncEmail) => {
     try {
       const sendURL = config.getRouteUrl(config.SERVER_ROUTES.USERS);
-      console.log(`!!!!!${fncEmail}`);
       const response = await axios.get(sendURL, {
         params: {
           email: fncEmail,
@@ -52,6 +54,7 @@ export default function GymManagerHomePage({ navigation }) {
       });
       console.log(response.data.user);
       setUser(response.data.user);
+      AsyncStorage.setItem("user", JSON.stringify(response.data.user));
     } catch (error) {
       console.error("Error getting user from Firestore:", error);
     }
