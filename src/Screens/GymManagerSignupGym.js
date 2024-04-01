@@ -11,28 +11,38 @@ export default function GymManagerSignupGym() {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [gymType, setGymType] = useState("");
+  const [administrator, setAdministrator] = useState("");
 
   useEffect(() => {
-    async function fetchUser() {
-      console.log(await AsyncStorage.getItem("user"));
+    async function fetchAdministrator() {
+      const administratorValue = await AsyncStorage.getItem("user");
+      const parsedAdministrator = JSON.parse(administratorValue);
+      setAdministrator(parsedAdministrator);
+      console.log(administrator);
     }
-    fetchUser();
+    fetchAdministrator();
   }, []);
 
   const createGym = async () => {
     try {
-      const gymData = {
-        name: name,
-        coords: new firebase.firestore.GeoPoint(latitude, longitude),
-        type: gymType,
-      };
+      let gymData = {};
 
-      const sendURL = config.getRouteUrl(config.SERVER_ROUTES.SIGNUP_GYM);
-      const response = await axios.post(sendURL, {
-        gymData: gymData,
-      });
+      if (name && latitude && longitude && gymType) {
+        gymData = {
+          name: name,
+          coords: new firebase.firestore.GeoPoint(latitude, longitude),
+          type: gymType,
+          owner: administrator.email,
+        };
 
-      alert("Gym registered successfully!");
+        const sendURL = config.getRouteUrl(config.SERVER_ROUTES.SIGNUP_GYM);
+        const response = await axios.post(sendURL, {
+          gymData: gymData,
+        });
+        alert("Gym registered successfully!");
+      } else {
+        alert("Required fields are missing!");
+      }
     } catch (error) {
       if (error.response) {
         alert(error.response.data.error);
