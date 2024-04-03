@@ -12,6 +12,8 @@ import VideosPage from "./src/Screens/VideosPage";
 import GymManagerLoginPage from "./src/Screens/GymManagerLoginPage";
 import GymManagerHomePage from "./src/Screens/GymManagerHomePage";
 import GymManagerSignupGym from "./src/Screens/GymManagerSignupGym";
+import QRScannerPage from "./src/Screens/QRScannerPage";
+import StripePaymentPage from "./src/Screens/StripePaymentPage";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -21,6 +23,7 @@ const HomeDrawer = () => (
     <Drawer.Screen name="Main Page" component={MainHomePage} />
     <Drawer.Screen name="Training Timer" component={TimerPage} />
     <Drawer.Screen name="My Workouts" component={VideosPage} />
+    <Drawer.Screen name="Scan Gym QR" component={QRScannerPage} />
   </Drawer.Navigator>
 );
 
@@ -38,6 +41,7 @@ const App = () => (
       <Stack.Screen name="LoginPage" component={MainLoginPage} />
       <Stack.Screen name="SignupPage" component={MainSignupPage} />
       <Stack.Screen name="GymLoginPage" component={GymManagerLoginPage} />
+      <Stack.Screen name="PaymentPage" component={StripePaymentPage} />
       <Stack.Screen
         name="HomePage"
         component={HomeDrawer}
