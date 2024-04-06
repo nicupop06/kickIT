@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, TextInput, StyleSheet, Button } from "react-native";
 import {
   StripeProvider,
@@ -8,16 +8,28 @@ import {
 import config from "../Config/config";
 import axios from "axios";
 
-export default function StripePaymentPage() {
-  const [email, setEmail] = useState();
+export default function StripePaymentPage({ route }) {
   const [cardDetails, setCardDetails] = useState(null);
   const { confirmPayment, loading } = useConfirmPayment();
+  const { qrData } = route.params;
+  const [email, setEmail] = useState('');
+  const [uuid, setUUID] = useState('');
+
+  useEffect(() => {
+    if (qrData) {
+      const [emailFromQr, uuid] = qrData.split(' ');
+      setEmail(emailFromQr);
+      setUUID(uuid);
+    }
+  }, [qrData]);
 
   const fetchPaymentIntentClientSecret = async () => {
     const sendURL = config.getRouteUrl(config.SERVER_ROUTES.STRIPE_SECRET);
     const response = await axios.post(
       sendURL,
-      {},
+      {
+        gymId: uuid
+      },
       {
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +83,8 @@ export default function StripePaymentPage() {
           autoCapitalize="none"
           placeholder="E-mail"
           keyboardType="email-address"
-          onChange={(event) => setEmail(event.nativeEvent.text)}
+          value={email}
+          editable={false}
           style={styles.input}
         />
         <CardField

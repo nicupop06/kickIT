@@ -10,6 +10,7 @@ export default function GymManagerSignupGym() {
   const [name, setName] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const [entryPrice, setEntryPrice] = useState("");
   const [gymType, setGymType] = useState("");
   const [administrator, setAdministrator] = useState("");
 
@@ -27,10 +28,11 @@ export default function GymManagerSignupGym() {
     try {
       let gymData = {};
 
-      if (name && latitude && longitude && gymType) {
+      if (name && latitude && longitude && entryPrice && gymType) {
         gymData = {
           name: name,
           coords: new firebase.firestore.GeoPoint(latitude, longitude),
+          entryPrice: entryPrice,
           type: gymType,
           owner: administrator.email,
         };
@@ -74,6 +76,12 @@ export default function GymManagerSignupGym() {
         placeholder="Longitude"
         value={longitude}
         onChangeText={setLongitude}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Entry Price"
+        value={entryPrice}
+        onChangeText={setEntryPrice}
       />
       <RNPickerSelect
         style={pickerSelectStyles}

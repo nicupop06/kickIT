@@ -17,7 +17,7 @@ export default function QRScannerPage({ navigation }) {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    navigation.navigate("PaymentPage");
+    navigation.navigate("PaymentPage", { qrData: data });
   };
 
   if (cameraPermission === null) {
