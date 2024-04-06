@@ -145,6 +145,16 @@ export default function MainHomePage({ navigation }) {
       <View style={styles.buttonContainer}>
         <Button title="Log Out" onPress={handleLogout} />
       </View>
+      <View style={styles.legendContainer}>
+        <View style={styles.legendBox}>
+          <View style={[styles.colorSquare, { backgroundColor: "red" }]} />
+          <Text style={styles.legendText}>Workout</Text>
+        </View>
+        <View style={styles.legendBox}>
+          <View style={[styles.colorSquare, { backgroundColor: "black" }]} />
+          <Text style={styles.legendText}>Training</Text>
+        </View>
+      </View>
     </View>
   );
 }
@@ -169,5 +179,25 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
+  },
+  legendContainer: {
+    position: "absolute",
+    bottom: 30,
+    left: 20,
+    flexDirection: "row",
+  },
+  legendBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 20,
+  },
+  colorSquare: {
+    width: 20,
+    height: 20,
+    marginRight: 5,
+  },
+  legendText: {
+    color: "black",
+    fontWeight: "bold",
   },
 });
