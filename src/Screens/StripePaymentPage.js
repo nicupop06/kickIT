@@ -8,7 +8,7 @@ import {
 import config from "../Config/config";
 import axios from "axios";
 
-export default function StripePaymentPage({ route }) {
+export default function StripePaymentPage({ route, navigation }) {
   const [cardDetails, setCardDetails] = useState(null);
   const { confirmPayment, loading } = useConfirmPayment();
   const { qrData } = route.params;
@@ -68,6 +68,7 @@ export default function StripePaymentPage({ route }) {
         } else if (paymentIntent) {
           alert("Payment Successful");
           console.log("Payment successful ", paymentIntent);
+          navigation.navigate("Main Page");
         }
       }
     } catch (e) {

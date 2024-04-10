@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../Config/firebaseConfig";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -65,6 +65,23 @@ export default function MainHomePage({ navigation }) {
     return () => unsubscribe();
   }, []);
 
+  const fetchReviewsForGym = async (gymId) => {
+    console.log(gymId);
+    const sendURL = config.getRouteUrl(config.SERVER_ROUTES.REVIEWS);
+      const response = await axios.get(sendURL, {
+        params: {
+          gymId: gymId,
+        },
+      });
+
+    return response.data;
+  }
+
+  const handleReviews = async (gymId) => {
+    fetchReviewsForGym(gymId);
+    
+  }
+
   const handleLogout = async () => {
     const sendURL = config.getRouteUrl(config.SERVER_ROUTES.LOGOUT);
     try {
@@ -122,22 +139,34 @@ export default function MainHomePage({ navigation }) {
           >
             <FontAwesomeIcon name="user" size={30} color="blue" />
           </Marker>
-          {kbgyms.map((loc) => (
-            <Marker
-              key={`${loc.id}`}
-              coordinate={{
-                latitude: parseFloat(loc.coords.latitude),
-                longitude: parseFloat(loc.coords.longitude),
-              }}
-              title={loc.name}
-            >
-              <MaterialCommunityIcons
-                name="boxing-glove"
-                size={30}
-                color={loc.type === "workout" ? "red" : "black"}
-              />
-            </Marker>
-          ))}
+          {kbgyms.map((loc) => {
+            // console.log(loc);
+            return (
+              <Marker
+                key={`${loc.id}`}
+                coordinate={{
+                  latitude: parseFloat(loc.coords.latitude),
+                  longitude: parseFloat(loc.coords.longitude),
+                }}
+                title={loc.name}
+              >
+                <MaterialCommunityIcons
+                  name="boxing-glove"
+                  size={30}
+                  color={loc.type === "workout" ? "red" : "black"}
+                />
+                <Callout style={{ width: 120 }} onPress={() => handleReviews(loc.id)}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontWeight: "bold", textAlign: 'center' }}>
+                      {loc.name}
+                    </Text>
+                    <Text style={{ textAlign: 'center' }}>Price: {loc.entryPrice}</Text>
+                    <Text style={{ textAlign: 'center', color: 'blue' }}>press for reviews</Text>
+                  </View>
+                </Callout>
+              </Marker>
+            );
+          })}
         </MapView>
       ) : (
         <Text style={styles.loading}>Loading...</Text>
