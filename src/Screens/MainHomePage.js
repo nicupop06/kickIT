@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Modal,
+  ActivityIndicator,
+  FlatList,
+} from "react-native";
+import { Rating, AirbnbRating } from "react-native-ratings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../Config/firebaseConfig";
 import MapView, { Marker, Callout } from "react-native-maps";
@@ -15,6 +24,9 @@ export default function MainHomePage({ navigation }) {
   const [user, setUser] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [kbgyms, setKbGyms] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [loadingReviews, setLoadingReviews] = useState(false);
 
   //For map
   const [location, setLocation] = useState(null);
@@ -68,19 +80,44 @@ export default function MainHomePage({ navigation }) {
   const fetchReviewsForGym = async (gymId) => {
     console.log(gymId);
     const sendURL = config.getRouteUrl(config.SERVER_ROUTES.REVIEWS);
-      const response = await axios.get(sendURL, {
-        params: {
-          gymId: gymId,
-        },
-      });
+    const response = await axios.get(sendURL, {
+      params: {
+        gymId: gymId,
+      },
+    });
 
     return response.data;
-  }
+  };
 
-  const handleReviews = async (gymId) => {
-    fetchReviewsForGym(gymId);
-    
-  }
+  const handleCalloutPress = async (gymId) => {
+    // Fetch reviews from Firebase when callout is pressed
+    setLoadingReviews(true);
+    try {
+      const gymReviews = await fetchReviewsForGym(gymId);
+      setReviews(gymReviews.reviews);
+      console.log(reviews);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    } finally {
+      setLoadingReviews(false);
+      setModalVisible(true);
+    }
+  };
+
+  const renderReviews = ({ item }) => (
+    <View style={styles.reviewItem}>
+      <Text style={styles.reviewText}>{item.date}</Text>
+      <Text style={styles.reviewText}>{item.name}</Text>
+      <Text style={styles.reviewText}>{item.text}</Text>
+      <AirbnbRating
+        count={5}
+        defaultRating={item.stars}
+        size={20}
+        showRating={true}
+        isDisabled
+      />
+    </View>
+  );
 
   const handleLogout = async () => {
     const sendURL = config.getRouteUrl(config.SERVER_ROUTES.LOGOUT);
@@ -155,13 +192,20 @@ export default function MainHomePage({ navigation }) {
                   size={30}
                   color={loc.type === "workout" ? "red" : "black"}
                 />
-                <Callout style={{ width: 120 }} onPress={() => handleReviews(loc.id)}>
+                <Callout
+                  style={{ width: 120 }}
+                  onPress={() => handleCalloutPress(loc.id)}
+                >
                   <View style={{ flex: 1 }}>
-                    <Text style={{ fontWeight: "bold", textAlign: 'center' }}>
+                    <Text style={{ fontWeight: "bold", textAlign: "center" }}>
                       {loc.name}
                     </Text>
-                    <Text style={{ textAlign: 'center' }}>Price: {loc.entryPrice}</Text>
-                    <Text style={{ textAlign: 'center', color: 'blue' }}>press for reviews</Text>
+                    <Text style={{ textAlign: "center" }}>
+                      Price: {loc.entryPrice}
+                    </Text>
+                    <Text style={{ textAlign: "center", color: "blue" }}>
+                      press for reviews
+                    </Text>
                   </View>
                 </Callout>
               </Marker>
@@ -171,6 +215,27 @@ export default function MainHomePage({ navigation }) {
       ) : (
         <Text style={styles.loading}>Loading...</Text>
       )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            {loadingReviews ? (
+              <ActivityIndicator size="large" color="#0000ff" />
+            ) : (
+              <FlatList
+                data={reviews}
+                keyExtractor={(item) => item.name}
+                renderItem={renderReviews}
+              />
+            )}
+            <Button title="Close" onPress={() => setModalVisible(false)} />
+          </View>
+        </View>
+      </Modal>
       <View style={styles.buttonContainer}>
         <Button title="Log Out" onPress={handleLogout} />
       </View>
@@ -228,5 +293,34 @@ const styles = StyleSheet.create({
   legendText: {
     color: "black",
     fontWeight: "bold",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    flex: 1,
+    marginTop: 100,
+    marginBottom: 100,
+    marginHorizontal: 20,
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+    alignItems: "center",
+    width: "90%",
+    alignSelf: "center",
+  },
+  reviewItem: {
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    paddingBottom: 10,
+  },
+  reviewText: {
+    fontSize: 16,
+    marginBottom: 5,
   },
 });
