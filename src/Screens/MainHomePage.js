@@ -7,6 +7,7 @@ import {
   Modal,
   ActivityIndicator,
   FlatList,
+  TextInput,
 } from "react-native";
 import { Rating, AirbnbRating } from "react-native-ratings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -27,6 +28,9 @@ export default function MainHomePage({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [loadingReviews, setLoadingReviews] = useState(false);
+  const [selectedGym, setSelectedGym] = useState("");
+  const [reviewText, setReviewText] = useState("");
+  const [starRating, setStarRating] = useState(0);
 
   //For map
   const [location, setLocation] = useState(null);
@@ -44,6 +48,8 @@ export default function MainHomePage({ navigation }) {
         alert("Error retrieving email from AsyncStorage:", error);
       });
   }, [email]);
+
+  useEffect(() => {}, [starRating, reviewText]);
 
   //Ask for map permissions in order to show it from where the user is
   useEffect(() => {
@@ -78,7 +84,6 @@ export default function MainHomePage({ navigation }) {
   }, []);
 
   const fetchReviewsForGym = async (gymId) => {
-    console.log(gymId);
     const sendURL = config.getRouteUrl(config.SERVER_ROUTES.REVIEWS);
     const response = await axios.get(sendURL, {
       params: {
@@ -89,8 +94,25 @@ export default function MainHomePage({ navigation }) {
     return response.data;
   };
 
+  const handleCreateReview = async () => {
+    console.log(selectedGym);
+    const reviewData = {
+      name: user.firstName,
+      stars: starRating,
+      gymId: selectedGym,
+      text: reviewText,
+    };
+    const sendURL = config.getRouteUrl(config.SERVER_ROUTES.REVIEWS);
+    const response = await axios.post(sendURL, {
+      reviewData: reviewData,
+    });
+    alert("Thanks for the review!");
+    setReviewText("");
+  };
+
   const handleCalloutPress = async (gymId) => {
     // Fetch reviews from Firebase when callout is pressed
+    setSelectedGym(gymId);
     setLoadingReviews(true);
     try {
       const gymReviews = await fetchReviewsForGym(gymId);
@@ -118,6 +140,10 @@ export default function MainHomePage({ navigation }) {
       />
     </View>
   );
+
+  const handleStarRatingChange = (rating) => {
+    setStarRating(rating);
+  };
 
   const handleLogout = async () => {
     const sendURL = config.getRouteUrl(config.SERVER_ROUTES.LOGOUT);
@@ -226,11 +252,33 @@ export default function MainHomePage({ navigation }) {
             {loadingReviews ? (
               <ActivityIndicator size="large" color="#0000ff" />
             ) : (
-              <FlatList
-                data={reviews}
-                keyExtractor={(item) => item.name}
-                renderItem={renderReviews}
-              />
+              <>
+                <FlatList
+                  data={reviews}
+                  keyExtractor={(item) => item.text}
+                  renderItem={renderReviews}
+                />
+                <View style={styles.reviewForm}>
+                  <TextInput
+                    placeholder="Enter your review..."
+                    style={styles.input}
+                    onChangeText={setReviewText}
+                    value={reviewText}
+                  />
+                  <AirbnbRating
+                    count={5}
+                    defaultRating={0}
+                    size={20}
+                    showRating={true}
+                    onFinishRating={handleStarRatingChange}
+                  />
+                  <Button
+                    title="Submit Review"
+                    onPress={handleCreateReview}
+                    disabled={!reviewText || starRating === 0}
+                  />
+                </View>
+              </>
             )}
             <Button title="Close" onPress={() => setModalVisible(false)} />
           </View>
@@ -272,7 +320,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     position: "absolute",
     bottom: 20,
-    right: 20,
+    right: 15,
   },
   legendContainer: {
     position: "absolute",
@@ -322,5 +370,10 @@ const styles = StyleSheet.create({
   reviewText: {
     fontSize: 16,
     marginBottom: 5,
+  },
+  reviewForm: {
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 20,
   },
 });

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function TimerPage() {
   const [roundLength, setRoundLength] = useState("3"); // Default round length in minutes
@@ -108,7 +109,7 @@ export default function TimerPage() {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text>Round Length (minutes):</Text>
+        <Text style={styles.inputLabel}>Round Length (minutes):</Text>
         <TextInput
           style={styles.input}
           value={roundLength}
@@ -117,7 +118,7 @@ export default function TimerPage() {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text>Pause Length (seconds):</Text>
+        <Text style={styles.inputLabel}>Pause Length (seconds):</Text>
         <TextInput
           style={styles.input}
           value={pauseLength}
@@ -126,7 +127,7 @@ export default function TimerPage() {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text>Number of Rounds:</Text>
+        <Text style={styles.inputLabel}>Number of Rounds:</Text>
         <TextInput
           style={styles.input}
           value={numRounds}
@@ -134,16 +135,20 @@ export default function TimerPage() {
           keyboardType="numeric"
         />
       </View>
-      <View>
-        <Text>{timerText}</Text>
-      </View>
+      <Text style={styles.timerText}>{timerText}</Text>
       <View style={styles.buttonContainer}>
         {!isRunning ? (
-          <Button title="Start Timer" onPress={startTimer} />
+          <TouchableOpacity style={styles.button} onPress={startTimer}>
+            <Text style={styles.buttonText}>Start Timer</Text>
+          </TouchableOpacity>
         ) : (
-          <Button title="Stop Timer" onPress={stopTimer} />
+          <TouchableOpacity style={styles.button} onPress={stopTimer}>
+            <Text style={styles.buttonText}>Stop Timer</Text>
+          </TouchableOpacity>
         )}
-        <Button title="Reset Timer" onPress={resetTimer} />
+        <TouchableOpacity style={styles.button} onPress={resetTimer}>
+          <Text style={styles.buttonText}>Reset Timer</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -155,21 +160,54 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
+    backgroundColor: "#f0f0f0", // Light background color
   },
   inputContainer: {
-    marginBottom: 10,
+    marginBottom: 20,
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  inputLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333", // Dark text color
+    marginRight: 10,
   },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    width: 200,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    width: "45%", // Adjust input width
+    backgroundColor: "#fff", // White background color
+    color: "#333", // Dark text color
+    fontSize: 16,
+    textAlign: "center",
+  },
+  timerText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#333", // Dark text color
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
+    justifyContent: "space-around",
+    width: "100%",
+  },
+  button: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+    backgroundColor: "#007bff", // Blue button color
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff", // White text color
+    textAlign: "center",
   },
 });

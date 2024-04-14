@@ -55,25 +55,34 @@ export default function MainWelcomePage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
+    padding: 20,
   },
   button: {
     marginTop: 20,
-    padding: 10,
-    backgroundColor: "blue",
-    borderRadius: 5,
-  },
-  buttonPressed: {
-    backgroundColor: "darkblue",
-  },
-  manageGymsButton: {
-    marginTop: 20,
-    backgroundColor: "green", // Example color, adjust as needed
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    backgroundColor: "#4CAF50", // Green color
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 3, // Add shadow
   },
   buttonText: {
     color: "#fff",
     fontSize: 18,
+    fontWeight: "bold", // Add bold font weight
+  },
+  manageGymsButton: {
+    marginTop: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    backgroundColor: "#2196F3", // Blue color
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 3,
   },
 });

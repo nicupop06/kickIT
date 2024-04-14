@@ -83,7 +83,7 @@ export default function MainSignupPage({ navigation }) {
         onChangeText={setLastName}
       />
       <TouchableOpacity
-        style={styles.button}
+        style={styles.dateButton}
         onPress={() => setShowDatePicker(true)}
       >
         <Text style={styles.buttonText}>Choose Date</Text>
@@ -98,7 +98,7 @@ export default function MainSignupPage({ navigation }) {
           onChange={onDateChange}
         />
       )}
-      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+      <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
     </View>
@@ -111,31 +111,38 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
   },
   input: {
-    width: "80%",
+    width: "100%",
     height: 40,
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: "#ccc",
     borderRadius: 5,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     marginBottom: 20,
   },
-  datePicker: {
+  dateButton: {
+    backgroundColor: "green",
     width: "100%",
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: "blue",
-    width: "80%",
     height: 40,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 10,
+  },
+  signUpButton: {
+    backgroundColor: "blue",
+    width: "100%",
+    height: 40,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 50,
   },
   buttonText: {
     color: "#fff",

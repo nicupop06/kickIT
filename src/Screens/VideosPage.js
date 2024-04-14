@@ -20,7 +20,7 @@ export default function VideosPage() {
 
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [videoName, setVideoName] = useState('');
+  const [videoName, setVideoName] = useState("");
 
   useEffect(() => {
     fetchVideos();
@@ -165,20 +165,32 @@ export default function VideosPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f0f0f0",
+    padding: 20,
     alignItems: "center",
-    padding: 10,
   },
   buttonStyle: {
-    alignItems: "center",
-    backgroundColor: "green",
-    padding: 10,
-    width: 300,
-    marginTop: 16,
+    backgroundColor: "#007bff",
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 5,
+    marginTop: 20,
   },
   buttonTextStyle: {
-    color: "white",
+    color: "#fff",
     fontWeight: "bold",
+    fontSize: 16,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    width: "100%",
+    marginTop: 10,
+    backgroundColor: "#fff",
+    fontSize: 16,
   },
   videoItem: {
     padding: 10,
