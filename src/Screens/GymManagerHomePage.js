@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, FlatList } from "react-native";
 import config from "../Config/config";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,6 +7,22 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function GymManagerHomePage({ navigation }) {
   const [email, setEmail] = useState("");
   const [user, setUser] = useState(null);
+  const [adminGyms, setAdminGyms] = useState([]);
+
+  const fetchAdminGyms = async () => {
+    try {
+      const sendURL = config.getRouteUrl(config.SERVER_ROUTES.ADMIN_KGBYMS);
+      const response = await axios.get(sendURL, {
+        params: {
+          email: email,
+        },
+      });
+
+      setAdminGyms(response.data.adminGyms);
+    } catch (error) {
+      alert("Error fetching gyms");
+    }
+  };
 
   const handleLogout = async () => {
     const sendURL = config.getRouteUrl(config.SERVER_ROUTES.LOGOUT);
@@ -41,6 +57,7 @@ export default function GymManagerHomePage({ navigation }) {
         });
     }
     fetchEmail();
+    fetchAdminGyms();
   }, [email]);
 
   //Collect the whole user after email is taken from localstorage
@@ -52,7 +69,6 @@ export default function GymManagerHomePage({ navigation }) {
           email: fncEmail,
         },
       });
-      console.log(response.data.user);
       setUser(response.data.user);
       AsyncStorage.setItem("user", JSON.stringify(response.data.user));
     } catch (error) {
@@ -62,7 +78,16 @@ export default function GymManagerHomePage({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Hello, React Native!</Text>
+      <FlatList
+        data={adminGyms}
+        keyExtractor={(item) => item.name}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text>{item.name}</Text>
+            <Text>{item.noEntries * item.entryPrice} RON</Text>
+          </View>
+        )}
+      />
       <View style={styles.buttonContainer}>
         <Button title="Log Out" onPress={handleLogout} />
       </View>
@@ -85,5 +110,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
+  },
+  item: {
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
   },
 });

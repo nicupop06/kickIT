@@ -6,7 +6,7 @@ const config = {
   SERVER_ROUTES: {
     LOGIN_USER: "login-user",
     SIGNUP_USER: "signup-user",
-    KGBYMS: "kbgyms",
+    ADMIN_KGBYMS: "admin-kbgyms",
     USERS: "users",
     LOGIN_ADMINISTRATOR: "login-user",
     LOGOUT: "logout",

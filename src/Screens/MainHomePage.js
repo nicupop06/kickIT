@@ -9,7 +9,7 @@ import {
   FlatList,
   TextInput,
 } from "react-native";
-import { Rating, AirbnbRating } from "react-native-ratings";
+import { AirbnbRating } from "react-native-ratings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../Config/firebaseConfig";
 import MapView, { Marker, Callout } from "react-native-maps";
@@ -117,7 +117,6 @@ export default function MainHomePage({ navigation }) {
     try {
       const gymReviews = await fetchReviewsForGym(gymId);
       setReviews(gymReviews.reviews);
-      console.log(reviews);
     } catch (error) {
       console.error("Error fetching reviews:", error);
     } finally {
@@ -167,7 +166,6 @@ export default function MainHomePage({ navigation }) {
   const getUserFromFirestore = async (fncEmail) => {
     try {
       const sendURL = config.getRouteUrl(config.SERVER_ROUTES.USERS);
-      console.log(`!!!!!${fncEmail}`);
       const response = await axios.get(sendURL, {
         params: {
           email: fncEmail,
@@ -175,7 +173,6 @@ export default function MainHomePage({ navigation }) {
       });
       console.log(response.data.user);
       setUser(response.data.user);
-      // console.log(user);
     } catch (error) {
       console.error("Error getting user from Firestore:", error);
     }
@@ -203,7 +200,6 @@ export default function MainHomePage({ navigation }) {
             <FontAwesomeIcon name="user" size={30} color="blue" />
           </Marker>
           {kbgyms.map((loc) => {
-            // console.log(loc);
             return (
               <Marker
                 key={`${loc.id}`}
@@ -372,8 +368,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   reviewForm: {
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
     marginTop: 20,
   },
 });
