@@ -13,6 +13,7 @@ const config = {
     SIGNUP_GYM: "signup-gym",
     STRIPE_SECRET: "stripe-secret",
     REVIEWS: "reviews",
+    VIDEOS: "videos",
   },
   getRouteUrl(route) {
     return `${this.SERVER_BASE_URL}/${route}`;

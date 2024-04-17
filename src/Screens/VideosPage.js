@@ -9,11 +9,13 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import { ref, uploadBytes, listAll, getDownloadURL } from "@firebase/storage";
+import { ref, uploadBytes } from "@firebase/storage";
 import * as DocumentPicker from "expo-document-picker";
 import { storage } from "../Config/firebaseConfig";
 import * as FileSystem from "expo-file-system";
 import { Video } from "expo-av";
+import config from "../Config/config";
+import axios from "axios";
 
 export default function VideosPage() {
   const [filePath, setFilePath] = useState({});
@@ -28,17 +30,9 @@ export default function VideosPage() {
 
   const fetchVideos = async () => {
     try {
-      const storageRef = ref(storage);
-      const listResult = await listAll(storageRef);
-
-      const videoUrls = await Promise.all(
-        listResult.items.map(async (itemRef) => {
-          const url = await getDownloadURL(itemRef);
-          return { name: itemRef.name, url };
-        })
-      );
-
-      setVideos(videoUrls);
+      const sendURL = config.getRouteUrl(config.SERVER_ROUTES.VIDEOS);
+      const response = await axios.get(sendURL);
+      setVideos(response.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching videos:", error);
