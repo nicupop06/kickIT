@@ -110,7 +110,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 5,
     color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
+    paddingRight: 30,
   },
   inputAndroid: {
     fontSize: 16,
@@ -120,7 +120,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 5,
     color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
+    paddingRight: 30,
   },
 });
 
@@ -147,11 +147,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: "#4CAF50", // Green color
+    backgroundColor: "#4CAF50",
     borderRadius: 25,
     paddingVertical: 15,
     paddingHorizontal: 40,
-    elevation: 3, // Add shadow
+    elevation: 3,
   },
   buttonText: {
     color: "#fff",

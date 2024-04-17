@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
-    backgroundColor: "#f0f0f0", // Light background color
+    backgroundColor: "#f0f0f0",
   },
   inputContainer: {
     marginBottom: 20,
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#333", // Dark text color
+    color: "#333",
     marginRight: 10,
   },
   input: {
@@ -181,9 +181,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    width: "45%", // Adjust input width
-    backgroundColor: "#fff", // White background color
-    color: "#333", // Dark text color
+    width: "45%",
+    backgroundColor: "#fff",
+    color: "#333",
     fontSize: 16,
     textAlign: "center",
   },
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#333", // Dark text color
+    color: "#333",
   },
   buttonContainer: {
     flexDirection: "row",
@@ -202,12 +202,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 5,
-    backgroundColor: "#007bff", // Blue button color
+    backgroundColor: "#007bff",
   },
   buttonText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#fff", // White text color
+    color: "#fff",
     textAlign: "center",
   },
 });

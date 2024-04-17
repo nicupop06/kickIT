@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingVertical: 15,
     paddingHorizontal: 40,
-    backgroundColor: "#4CAF50", // Green color
+    backgroundColor: "#4CAF50",
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
@@ -73,13 +73,13 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 18,
-    fontWeight: "bold", // Add bold font weight
+    fontWeight: "bold",
   },
   manageGymsButton: {
     marginTop: 20,
     paddingVertical: 15,
     paddingHorizontal: 40,
-    backgroundColor: "#2196F3", // Blue color
+    backgroundColor: "#2196F3",
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",

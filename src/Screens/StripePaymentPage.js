@@ -7,17 +7,32 @@ import {
 } from "@stripe/stripe-react-native";
 import config from "../Config/config";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function StripePaymentPage({ route, navigation }) {
   const [cardDetails, setCardDetails] = useState(null);
   const { confirmPayment, loading } = useConfirmPayment();
   const { qrData } = route.params;
-  const [email, setEmail] = useState('');
-  const [uuid, setUUID] = useState('');
+  const [email, setEmail] = useState("");
+  const [uuid, setUUID] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+
+  //Get email from localstorage (login placed it there)
+  useEffect(() => {
+    AsyncStorage.getItem("email")
+      .then((storedEmail) => {
+        if (storedEmail) {
+          setUserEmail(storedEmail);
+        }
+      })
+      .catch((error) => {
+        alert("Error retrieving email from AsyncStorage:", error);
+      });
+  }, [userEmail]);
 
   useEffect(() => {
     if (qrData) {
-      const [emailFromQr, uuid] = qrData.split(' ');
+      const [emailFromQr, uuid] = qrData.split(" ");
       setEmail(emailFromQr);
       setUUID(uuid);
     }
@@ -28,7 +43,8 @@ export default function StripePaymentPage({ route, navigation }) {
     const response = await axios.post(
       sendURL,
       {
-        gymId: uuid
+        gymId: uuid,
+        email: userEmail,
       },
       {
         headers: {

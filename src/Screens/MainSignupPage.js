@@ -27,6 +27,7 @@ export default function MainSignupPage({ navigation }) {
         lastName: lastName,
         dateOfBirth: dateOfBirth.toLocaleDateString(),
         memberSince: new Date().toLocaleDateString(),
+        noEntries: 0,
       };
 
       const sendURL = config.getRouteUrl(config.SERVER_ROUTES.SIGNUP_USER);
