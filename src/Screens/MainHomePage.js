@@ -12,7 +12,7 @@ import {
 import { AirbnbRating } from "react-native-ratings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../Config/firebaseConfig";
-import MapView, { Marker, Callout } from "react-native-maps";
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -49,7 +49,9 @@ export default function MainHomePage({ navigation }) {
       });
   }, [email]);
 
-  useEffect(() => {}, [starRating, reviewText]);
+  useEffect(() => {
+    console.log("check");
+  }, [starRating, reviewText]);
 
   //Ask for map permissions in order to show it from where the user is
   useEffect(() => {
@@ -142,6 +144,7 @@ export default function MainHomePage({ navigation }) {
 
   const handleStarRatingChange = (rating) => {
     setStarRating(rating);
+    console.log("check");
   };
 
   const handleLogout = async () => {
@@ -184,6 +187,7 @@ export default function MainHomePage({ navigation }) {
         <Text>{errorMsg}</Text>
       ) : location ? (
         <MapView
+          provider={PROVIDER_GOOGLE}
           style={styles.map}
           initialRegion={{
             latitude: location.coords.latitude,

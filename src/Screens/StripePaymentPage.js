@@ -13,7 +13,7 @@ export default function StripePaymentPage({ route, navigation }) {
   const [cardDetails, setCardDetails] = useState(null);
   const { confirmPayment, loading } = useConfirmPayment();
   const { qrData } = route.params;
-  const [email, setEmail] = useState("");
+  const [gym, setGym] = useState("");
   const [uuid, setUUID] = useState("");
   const [userEmail, setUserEmail] = useState("");
 
@@ -32,8 +32,8 @@ export default function StripePaymentPage({ route, navigation }) {
 
   useEffect(() => {
     if (qrData) {
-      const [emailFromQr, uuid] = qrData.split(" ");
-      setEmail(emailFromQr);
+      const [gym, uuid] = qrData.split("|");
+      setGym(JSON.parse(gym));
       setUUID(uuid);
     }
   }, [qrData]);
@@ -64,7 +64,7 @@ export default function StripePaymentPage({ route, navigation }) {
       return;
     }
     const billingDetails = {
-      email: email,
+      email: gym.owner,
     };
     //2.Fetch the intent client secret from the backend
     try {
@@ -100,10 +100,17 @@ export default function StripePaymentPage({ route, navigation }) {
           autoCapitalize="none"
           placeholder="E-mail"
           keyboardType="email-address"
-          value={email}
+          value={gym.owner}
           editable={false}
           style={styles.input}
         />
+        <TextInput
+        autoCapitalize="none"
+        placeholder="Price"
+        value={`${gym.entryPrice} RON`}
+        editable={false}
+        style={styles.input}
+      />
         <CardField
           postalCodeEnabled={true}
           onCardChange={(cardDetails) => setCardDetails(cardDetails)}
