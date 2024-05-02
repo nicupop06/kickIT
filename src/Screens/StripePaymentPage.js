@@ -59,7 +59,7 @@ export default function StripePaymentPage({ route, navigation }) {
 
   const handlePayment = async () => {
     //1.Gather the customer's billing information (e.g., email)
-    if (!cardDetails || !cardDetails.complete || !email) {
+    if (!cardDetails || !cardDetails.complete || !gym.owner) {
       alert("Please enter Complete card details and Email");
       return;
     }

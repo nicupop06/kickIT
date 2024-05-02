@@ -50,7 +50,6 @@ export default function MainHomePage({ navigation }) {
   }, [email]);
 
   useEffect(() => {
-    console.log("check");
   }, [starRating, reviewText]);
 
   //Ask for map permissions in order to show it from where the user is
@@ -144,7 +143,6 @@ export default function MainHomePage({ navigation }) {
 
   const handleStarRatingChange = (rating) => {
     setStarRating(rating);
-    console.log("check");
   };
 
   const handleLogout = async () => {
