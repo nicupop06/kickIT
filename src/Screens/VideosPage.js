@@ -16,22 +16,39 @@ import * as FileSystem from "expo-file-system";
 import { Video } from "expo-av";
 import config from "../Config/config";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function VideosPage() {
   const [filePath, setFilePath] = useState({});
-
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [videoName, setVideoName] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     fetchVideos();
+    getEmailFromStorage();
   }, []);
+
+  const getEmailFromStorage = async () => {
+    try {
+      const storedEmail = await AsyncStorage.getItem("email");
+      if (storedEmail) {
+        setEmail(storedEmail);
+        console.log("Email:", storedEmail);
+      }
+    } catch (error) {
+      console.error("Error retrieving email from AsyncStorage:", error);
+      alert("Error retrieving email from AsyncStorage:", error);
+    }
+  };
 
   const fetchVideos = async () => {
     try {
       const sendURL = config.getRouteUrl(config.SERVER_ROUTES.VIDEOS);
-      const response = await axios.get(sendURL);
+      const response = await axios.get(sendURL, {
+        params: { email: email },
+      });
       setVideos(response.data);
       setLoading(false);
     } catch (error) {
@@ -85,15 +102,18 @@ export default function VideosPage() {
       }
 
       // Convert the buffer to a blob
-
       const response = await fetch(fileUri);
       const blob = await response.blob();
 
       // Create a storage reference
       const storageRef = ref(storage, `${videoName}.mp4`);
 
-      // Upload the file
-      const uploadTask = uploadBytes(storageRef, blob);
+      // Upload the file with metadata including the user's email
+      const uploadTask = uploadBytes(storageRef, blob, {
+        customMetadata: {
+          userEmail: email,
+        },
+      });
 
       // Handle the upload task
       uploadTask
@@ -120,7 +140,7 @@ export default function VideosPage() {
         <View style={styles.container}>
           <Text>Choose Video</Text>
           <TouchableOpacity
-            activieOpacity={0.5}
+            activeOpacity={0.5}
             style={styles.buttonStyle}
             onPress={pickFiles}
           >
