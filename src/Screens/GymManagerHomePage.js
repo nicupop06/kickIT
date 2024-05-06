@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, FlatList } from "react-native";
 import config from "../Config/config";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function GymManagerHomePage({ navigation }) {
   const [email, setEmail] = useState("");
@@ -82,10 +83,14 @@ export default function GymManagerHomePage({ navigation }) {
         data={adminGyms}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <View style={styles.item}>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => navigation.navigate('StatsPage', { gymName: item.name })}
+          >
             <Text>{item.name}</Text>
             <Text>{item.noEntries * item.entryPrice} RON</Text>
-          </View>
+            <Text style={{ color: 'blue' }}>Click for details</Text>
+          </TouchableOpacity>
         )}
       />
       <View style={styles.buttonContainer}>

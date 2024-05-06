@@ -1,7 +1,6 @@
 const config = {
   SERVER_BASE_URL: "http://192.168.100.86:3000",
-  // SERVER_BASE_URL: "http://172.20.10.5:3000",
-  // SERVER_BASE_URL: "http://192.168.107.75:3000",
+  // STRIPE_BASE_URL: "https://api.stripe.com",
   STRIPE_PUBLISHABLE_KEY:
     "pk_test_51P1YCERuXzvvb7O52UXIRHxLTRKL6A2JnM9MP8qVkocFyfirki5yjU1ATvGtWLwi87HiYL72GwtG99gEEAKed9Yd00H4UJmRiW",
   SERVER_ROUTES: {
@@ -15,10 +14,17 @@ const config = {
     STRIPE_SECRET: "stripe-secret",
     REVIEWS: "reviews",
     VIDEOS: "videos",
+    PAYMENTS: "payments"
   },
+  // STRIPE_ROUTES: {
+  //   PAYMENTS: "v1/payment-intents",
+  // },
   getRouteUrl(route) {
     return `${this.SERVER_BASE_URL}/${route}`;
   },
+  // getStripeRouteUrl(route) {
+  //   return `${this.STRIPE_BASE_URL}/${route}`;
+  // }
 };
 
 export default config;
