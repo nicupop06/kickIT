@@ -40,7 +40,7 @@ export default function GymStatsPage({ route }) {
     const no = paymentIntents.filter(
       (item) => moment(item.created * 1000).format("ddd") === day
     ).length;
-    return no;
+    return parseInt(no);
   }
 
   return (
@@ -63,15 +63,15 @@ export default function GymStatsPage({ route }) {
             },
           ],
         }}
-        width={Dimensions.get("window").width} // from react-native
-        height={220}
-        yAxisInterval={1} // optional, defaults to 1
+        width={Dimensions.get("window").width}
+        height={300}
+        yAxisInterval={1}
         chartConfig={{
-          backgroundColor: "#e6ffff", // Turquoise background color
-          backgroundGradientFrom: "#e6ffff", // Turquoise gradient start color
-          backgroundGradientTo: "#99e6e6", // Turquoise gradient end color
-          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Black line color
-          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Black label color
+          backgroundColor: "#e6ffff",
+          backgroundGradientFrom: "#e6ffff",
+          backgroundGradientTo: "#99e6e6",
+          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
           style: {
             borderRadius: 16,
           },
