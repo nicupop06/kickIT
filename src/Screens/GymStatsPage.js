@@ -3,15 +3,15 @@ import {
   View,
   Text,
   StyleSheet,
-  ActivityIndicator,
   Dimensions,
+  TouchableOpacity, // Import TouchableOpacity
 } from "react-native";
 import config from "../Config/config";
 import axios from "axios";
 import { LineChart } from "react-native-chart-kit";
 import moment from "moment";
 
-export default function GymStatsPage({ route }) {
+export default function GymStatsPage({ navigation, route }) {
   const [paymentIntents, setPaymentIntents] = useState([]);
   const [loading, setLoading] = useState(true);
   const { gymName } = route.params;
@@ -81,8 +81,8 @@ export default function GymStatsPage({ route }) {
             stroke: "blue",
           },
           propsForBackgroundLines: {
-            strokeWidth: 0
-          }
+            strokeWidth: 0,
+          },
         }}
         bezier
         style={{
@@ -90,6 +90,13 @@ export default function GymStatsPage({ route }) {
           borderRadius: 16,
         }}
       />
+      {/* Button to check logs */}
+      <TouchableOpacity
+        style={styles.checkLogsButton}
+        onPress={() => navigation.navigate("LogsPage", { gymName: gymName })}
+      >
+        <Text style={styles.checkLogsText}>Check Logs</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -105,5 +112,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+  checkLogsButton: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    backgroundColor: "blue",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  checkLogsText: {
+    color: "white",
+    fontSize: 16,
   },
 });

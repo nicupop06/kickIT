@@ -16,6 +16,7 @@ import QRScannerPage from "./src/Screens/QRScannerPage";
 import StripePaymentPage from "./src/Screens/StripePaymentPage";
 import GymStatsPage from "./src/Screens/GymStatsPage";
 import MyProfilePage from "./src/Screens/MyProfilePage";
+import GymLogsPage from "./src/Screens/GymLogsPage";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -46,6 +47,7 @@ const App = () => (
       <Stack.Screen name="GymLoginPage" component={GymManagerLoginPage} />
       <Stack.Screen name="PaymentPage" component={StripePaymentPage} />
       <Stack.Screen name="StatsPage" component={GymStatsPage} />
+      <Stack.Screen name="LogsPage" component={GymLogsPage} />
       <Stack.Screen
         name="HomePage"
         component={HomeDrawer}
