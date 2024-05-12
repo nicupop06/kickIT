@@ -1,10 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, TextInput, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import config from "../Config/config";
 import axios from "axios";
 import { firebase } from "../Config/firebaseConfig";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function GymManagerSignupGym() {
   const [name, setName] = useState("");
@@ -56,48 +63,62 @@ export default function GymManagerSignupGym() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Create Gym</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        value={name}
-        onChangeText={setName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Latitude"
-        value={latitude}
-        onChangeText={setLatitude}
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Longitude"
-        value={longitude}
-        onChangeText={setLongitude}
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Entry Price"
-        value={entryPrice}
-        onChangeText={setEntryPrice}
-        keyboardType="numeric"
-      />
-      <RNPickerSelect
-        style={pickerSelectStyles}
-        onValueChange={(value) => setGymType(value)}
-        placeholder={{ label: "Select Gym Type", value: null }}
-        items={[
-          { label: "Workout", value: "workout" },
-          { label: "Training", value: "training" },
-        ]}
-      />
-      <TouchableOpacity style={styles.button} onPress={createGym}>
-        <Text style={styles.buttonText}>Create Gym</Text>
-      </TouchableOpacity>
-    </View>
+    <LinearGradient colors={["#4CAF50", "#2196F3"]} style={styles.gradient}>
+      <View style={styles.container}>
+        <View style={styles.innerContainer}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.title}>Create Gym</Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Name"
+              value={name}
+              onChangeText={setName}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Latitude"
+              value={latitude}
+              onChangeText={setLatitude}
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Longitude"
+              value={longitude}
+              onChangeText={setLongitude}
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Entry Price"
+              value={entryPrice}
+              onChangeText={setEntryPrice}
+              keyboardType="numeric"
+            />
+          </View>
+          <RNPickerSelect
+            style={pickerSelectStyles}
+            onValueChange={(value) => setGymType(value)}
+            placeholder={{ label: "Select Gym Type", value: null }}
+            items={[
+              { label: "Workout", value: "workout" },
+              { label: "Training", value: "training" },
+            ]}
+          />
+          <TouchableOpacity style={styles.button} onPress={createGym}>
+            <Text style={styles.buttonText}>Create Gym</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </LinearGradient>
   );
 }
 
@@ -125,12 +146,29 @@ const pickerSelectStyles = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
-  container: {
+  gradient: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
+  },
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  innerContainer: {
+    width: "95%",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+  },
+  inputContainer: {
+    marginBottom: 20,
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 24,
@@ -139,7 +177,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    width: "100%",
+    width: "80%", // Set width to 80% of the container
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function MainWelcomePage({ navigation }) {
   const [loginPressed, setLoginPressed] = useState(false);
@@ -24,7 +25,7 @@ export default function MainWelcomePage({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={["#4CAF50", "#2196F3"]} style={styles.container}>
       <TouchableOpacity
         style={[styles.button, loginPressed && styles.buttonPressed]}
         onPress={handleLoginPress}
@@ -48,14 +49,13 @@ export default function MainWelcomePage({ navigation }) {
         <Text style={styles.buttonText}>Manage Your Gyms</Text>
       </TouchableOpacity>
       <StatusBar style="auto" />
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
     padding: 20,

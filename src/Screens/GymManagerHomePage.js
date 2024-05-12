@@ -4,6 +4,7 @@ import config from "../Config/config";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function GymManagerHomePage({ navigation }) {
   const [email, setEmail] = useState("");
@@ -78,32 +79,40 @@ export default function GymManagerHomePage({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={adminGyms}
-        keyExtractor={(item) => item.name}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.item}
-            onPress={() => navigation.navigate('StatsPage', { gymName: item.name })}
-          >
-            <Text>{item.name}</Text>
-            <Text>{item.noEntries * item.entryPrice} RON</Text>
-            <Text style={{ color: 'blue' }}>Click for details</Text>
-          </TouchableOpacity>
-        )}
-      />
-      <View style={styles.buttonContainer}>
-        <Button title="Log Out" onPress={handleLogout} />
+    <LinearGradient colors={["#4CAF50", "#2196F3"]} style={styles.gradient}>
+      <View style={styles.container}>
+        <FlatList
+          data={adminGyms}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.item}
+              onPress={() =>
+                navigation.navigate("StatsPage", { gymName: item.name })
+              }
+            >
+              <Text>{item.name}</Text>
+              <Text>{item.noEntries * item.entryPrice} RON</Text>
+              <Text style={{ color: "blue" }}>Click for details</Text>
+            </TouchableOpacity>
+          )}
+        />
+        <View style={styles.buttonContainer}>
+          <Button title="Log Out" onPress={handleLogout} color={"blue"} />
+        </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },

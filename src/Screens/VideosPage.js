@@ -17,6 +17,7 @@ import { Video } from "expo-av";
 import config from "../Config/config";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function VideosPage() {
   const [filePath, setFilePath] = useState({});
@@ -26,9 +27,9 @@ export default function VideosPage() {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    fetchVideos();
     getEmailFromStorage();
-  }, []);
+    fetchVideos();
+  }, [email]);
 
   const getEmailFromStorage = async () => {
     try {
@@ -136,50 +137,62 @@ export default function VideosPage() {
 
   return (
     <>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <Text>Choose Video</Text>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.buttonStyle}
-            onPress={pickFiles}
-          >
-            <Text style={styles.buttonTextStyle}>Choose Video</Text>
-          </TouchableOpacity>
-          <Text>Video Name:</Text>
-          <TextInput
-            style={styles.input}
-            value={videoName}
-            onChangeText={setVideoName}
-            placeholder="Enter video name"
-          />
-          <TouchableOpacity style={styles.buttonStyle} onPress={uploadVideos}>
-            <Text style={styles.buttonTextStyle}>
-              Upload File on FireStorage
-            </Text>
-          </TouchableOpacity>
-
-          <Text style={{ marginTop: 20 }}>Videos from Firebase Storage:</Text>
-          {loading ? (
-            <ActivityIndicator style={{ marginTop: 10 }} />
-          ) : (
-            <FlatList
-              data={videos}
-              renderItem={renderVideoItem}
-              keyExtractor={(item) => item.name}
-              style={{ marginTop: 10 }}
+      <LinearGradient colors={["#4CAF50", "#2196F3"]} style={styles.gradient}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={styles.container}>
+            <Text>Choose Video</Text>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.buttonStyle}
+              onPress={pickFiles}
+            >
+              <Text style={styles.buttonTextStyle}>Choose Video</Text>
+            </TouchableOpacity>
+            <Text>Video Name:</Text>
+            <TextInput
+              style={styles.input}
+              value={videoName}
+              onChangeText={setVideoName}
+              placeholder="Enter video name"
             />
-          )}
-        </View>
-      </SafeAreaView>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={uploadVideos}
+            >
+              <Text style={styles.buttonTextStyle}>
+                Upload File on FireStorage
+              </Text>
+            </TouchableOpacity>
+
+            <Text style={{ marginTop: 20 }}>
+              Videos from Firebase Storage:
+            </Text>
+            {loading ? (
+              <ActivityIndicator style={{ marginTop: 10 }} />
+            ) : (
+              <FlatList
+                data={videos}
+                renderItem={renderVideoItem}
+                keyExtractor={(item) => item.name}
+                style={{ marginTop: 10 }}
+              />
+            )}
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
+    // backgroundColor: "#f0f0f0",
     padding: 20,
     alignItems: "center",
   },

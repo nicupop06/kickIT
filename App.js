@@ -1,5 +1,6 @@
 import "react-native-gesture-handler";
 import React from "react";
+import { Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainWelcomePage from "./src/Screens/MainWelcomePage";
@@ -53,8 +54,16 @@ const HomeDrawer = () => (
 
 const GymHomeDrawer = () => (
   <Drawer.Navigator>
-    <Drawer.Screen name="Your Gyms" component={GymManagerHomePage} />
-    <Drawer.Screen name="Register Gym" component={GymManagerSignupGym} />
+    <Drawer.Screen
+      name="Your Gyms"
+      component={GymManagerHomePage}
+      options={{ title: "Your Gyms", headerTitleAlign: "center" }}
+    />
+    <Drawer.Screen
+      name="Register Gym"
+      component={GymManagerSignupGym}
+      options={{ title: "Register Gym", headerTitleAlign: "center" }}
+    />
   </Drawer.Navigator>
 );
 
@@ -64,7 +73,17 @@ const App = () => (
       <Stack.Screen
         name="WelcomePage"
         component={MainWelcomePage}
-        options={{ title: "KickIT", headerTitleAlign: "center" }}
+        options={{
+          // headerTitle: (props) => (
+          //   <Image
+          //     style={{ width: 120, height: 50 }}
+          //     source={require("./src/Config/KickIT-logo.png")}
+          //     resizeMode="contain"
+          //   />
+          // ),
+          title: "KickIT",
+          headerTitleAlign: "center",
+        }}
       />
       <Stack.Screen
         name="LoginPage"

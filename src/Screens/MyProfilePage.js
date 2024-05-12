@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import config from "../Config/config";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function MyProfilePage() {
   const [user, setUser] = useState(null);
@@ -63,41 +64,49 @@ export default function MyProfilePage() {
   };
 
   return (
-    <View style={styles.container}>
-      {user && (
-        <>
-          <View style={styles.profileHeader}>
-            <Text style={styles.fullName}>{user.firstName} {user.lastName} #{rank}/{noUsers}</Text>
-          </View>
-          <View style={styles.profileInfo}>
-            <View style={styles.infoField}>
-              <Text style={styles.label}>Email:</Text>
-              <Text style={styles.value}>{user.email}</Text>
+    <LinearGradient colors={["#4CAF50", "#2196F3"]} style={styles.gradient}>
+      <View style={styles.container}>
+        {user && (
+          <>
+            <View style={styles.profileHeader}>
+              <Text style={styles.fullName}>
+                {user.firstName} {user.lastName} #{rank}/{noUsers}
+              </Text>
             </View>
-            <View style={styles.infoField}>
-              <Text style={styles.label}>Date of Birth:</Text>
-              <Text style={styles.value}>{user.dateOfBirth}</Text>
+            <View style={styles.profileInfo}>
+              <View style={styles.infoField}>
+                <Text style={styles.label}>Email:</Text>
+                <Text style={styles.value}>{user.email}</Text>
+              </View>
+              <View style={styles.infoField}>
+                <Text style={styles.label}>Date of Birth:</Text>
+                <Text style={styles.value}>{user.dateOfBirth}</Text>
+              </View>
+              <View style={styles.infoField}>
+                <Text style={styles.label}>Member Since:</Text>
+                <Text style={styles.value}>{user.memberSince}</Text>
+              </View>
+              <View style={styles.infoField}>
+                <Text style={styles.label}>Number of entries:</Text>
+                <Text style={styles.value}>{user.noEntries}</Text>
+              </View>
             </View>
-            <View style={styles.infoField}>
-              <Text style={styles.label}>Member Since:</Text>
-              <Text style={styles.value}>{user.memberSince}</Text>
-            </View>
-            <View style={styles.infoField}>
-              <Text style={styles.label}>Number of entries:</Text>
-              <Text style={styles.value}>{user.noEntries}</Text>
-            </View>
-          </View>
-        </>
-      )}
-    </View>
+          </>
+        )}
+      </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
     alignItems: "center",
+    paddingTop: 20,
   },
   profileHeader: {
     alignItems: "center",
@@ -106,6 +115,7 @@ const styles = StyleSheet.create({
   fullName: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#fff",
   },
   profileInfo: {
     flex: 1,
@@ -120,8 +130,10 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
     marginRight: 5,
+    color: "#fff",
   },
   value: {
     flexShrink: 1,
+    color: "#fff",
   },
 });

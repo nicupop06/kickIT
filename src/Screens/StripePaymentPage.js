@@ -8,6 +8,7 @@ import {
 import config from "../Config/config";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function StripePaymentPage({ route, navigation }) {
   const [cardDetails, setCardDetails] = useState(null);
@@ -105,12 +106,12 @@ export default function StripePaymentPage({ route, navigation }) {
           style={styles.input}
         />
         <TextInput
-        autoCapitalize="none"
-        placeholder="Price"
-        value={`${gym.entryPrice} RON`}
-        editable={false}
-        style={styles.input}
-      />
+          autoCapitalize="none"
+          placeholder="Price"
+          value={`${gym.entryPrice} RON`}
+          editable={false}
+          style={styles.input}
+        />
         <CardField
           postalCodeEnabled={true}
           onCardChange={(cardDetails) => setCardDetails(cardDetails)}
@@ -127,13 +128,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    margin: 15,
+    backgroundColor: "turquoise"
   },
   input: {
     width: "80%",
     height: 40,
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: "black",
     borderRadius: 5,
     paddingLeft: 10,
     marginBottom: 20,
@@ -141,9 +142,6 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: "80%",
     height: 50,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 5,
     marginBottom: 20,
   },
 });

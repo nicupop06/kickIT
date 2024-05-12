@@ -10,6 +10,7 @@ import config from "../Config/config";
 import axios from "axios";
 import { LineChart } from "react-native-chart-kit";
 import moment from "moment";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function GymStatsPage({ navigation, route }) {
   const [paymentIntents, setPaymentIntents] = useState([]);
@@ -43,69 +44,75 @@ export default function GymStatsPage({ navigation, route }) {
   }
 
   return (
-    <View style={styles.container}>
-      <Text>No Entries / Week days</Text>
-      <LineChart
-        data={{
-          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-          datasets: [
-            {
-              data: [
-                countEntriesForDay("Mon"),
-                countEntriesForDay("Tue"),
-                countEntriesForDay("Wed"),
-                countEntriesForDay("Thu"),
-                countEntriesForDay("Fri"),
-                countEntriesForDay("Sat"),
-                countEntriesForDay("Sun"),
-              ],
+    <LinearGradient colors={["#4CAF50", "#2196F3"]} style={styles.gradient}>
+      <View style={styles.container}>
+        <Text>No Entries / Week days</Text>
+        <LineChart
+          data={{
+            labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            datasets: [
+              {
+                data: [
+                  countEntriesForDay("Mon"),
+                  countEntriesForDay("Tue"),
+                  countEntriesForDay("Wed"),
+                  countEntriesForDay("Thu"),
+                  countEntriesForDay("Fri"),
+                  countEntriesForDay("Sat"),
+                  countEntriesForDay("Sun"),
+                ],
+              },
+            ],
+          }}
+          width={Dimensions.get("window").width}
+          height={250}
+          yAxisInterval={1}
+          chartConfig={{
+            backgroundColor: "#e6ffff",
+            backgroundGradientFrom: "#e6ffff",
+            backgroundGradientTo: "#99e6e6",
+            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            style: {
+              borderRadius: 16,
             },
-          ],
-        }}
-        width={Dimensions.get("window").width}
-        height={300}
-        yAxisInterval={1}
-        chartConfig={{
-          backgroundColor: "#e6ffff",
-          backgroundGradientFrom: "#e6ffff",
-          backgroundGradientTo: "#99e6e6",
-          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          style: {
+            propsForDots: {
+              r: "6",
+              strokeWidth: "2",
+              stroke: "blue",
+            },
+            propsForBackgroundLines: {
+              strokeWidth: 0,
+            },
+          }}
+          bezier
+          style={{
+            marginVertical: 8,
             borderRadius: 16,
-          },
-          propsForDots: {
-            r: "6",
-            strokeWidth: "2",
-            stroke: "blue",
-          },
-          propsForBackgroundLines: {
-            strokeWidth: 0,
-          },
-        }}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-      />
-      {/* Button to check logs */}
-      <TouchableOpacity
-        style={styles.checkLogsButton}
-        onPress={() => navigation.navigate("LogsPage", { gymName: gymName })}
-      >
-        <Text style={styles.checkLogsText}>Check Logs</Text>
-      </TouchableOpacity>
-    </View>
+          }}
+        />
+        {/* Button to check logs */}
+        <TouchableOpacity
+          style={styles.checkLogsButton}
+          onPress={() => navigation.navigate("LogsPage", { gymName: gymName })}
+        >
+          <Text style={styles.checkLogsText}>Check Logs</Text>
+        </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5fcff",
   },
   title: {
     fontSize: 20,

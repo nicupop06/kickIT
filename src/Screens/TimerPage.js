@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function TimerPage() {
   const [roundLength, setRoundLength] = useState("3"); // Default round length in minutes
@@ -107,60 +108,74 @@ export default function TimerPage() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Round Length (minutes):</Text>
-        <TextInput
-          style={styles.input}
-          value={roundLength}
-          onChangeText={setRoundLength}
-          keyboardType="numeric"
-        />
+    <LinearGradient colors={["#4CAF50", "#2196F3"]} style={styles.gradient}>
+      <View style={styles.container}>
+        <View style={styles.innerContainer}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Round Length (minutes):</Text>
+            <TextInput
+              style={styles.input}
+              value={roundLength}
+              onChangeText={setRoundLength}
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Pause Length (seconds):</Text>
+            <TextInput
+              style={styles.input}
+              value={pauseLength}
+              onChangeText={setPauseLength}
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Number of Rounds:</Text>
+            <TextInput
+              style={styles.input}
+              value={numRounds}
+              onChangeText={setNumRounds}
+              keyboardType="numeric"
+            />
+          </View>
+          <Text style={styles.timerText}>{timerText}</Text>
+          <View style={styles.buttonContainer}>
+            {!isRunning ? (
+              <TouchableOpacity style={styles.button} onPress={startTimer}>
+                <Text style={styles.buttonText}>Start Timer</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.button} onPress={stopTimer}>
+                <Text style={styles.buttonText}>Stop Timer</Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity style={styles.button} onPress={resetTimer}>
+              <Text style={styles.buttonText}>Reset Timer</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Pause Length (seconds):</Text>
-        <TextInput
-          style={styles.input}
-          value={pauseLength}
-          onChangeText={setPauseLength}
-          keyboardType="numeric"
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Number of Rounds:</Text>
-        <TextInput
-          style={styles.input}
-          value={numRounds}
-          onChangeText={setNumRounds}
-          keyboardType="numeric"
-        />
-      </View>
-      <Text style={styles.timerText}>{timerText}</Text>
-      <View style={styles.buttonContainer}>
-        {!isRunning ? (
-          <TouchableOpacity style={styles.button} onPress={startTimer}>
-            <Text style={styles.buttonText}>Start Timer</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.button} onPress={stopTimer}>
-            <Text style={styles.buttonText}>Stop Timer</Text>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity style={styles.button} onPress={resetTimer}>
-          <Text style={styles.buttonText}>Reset Timer</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 20,
-    backgroundColor: "#f0f0f0",
+    justifyContent: "center",
+  },
+  innerContainer: {
+    width: "80%",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
   },
   inputContainer: {
     marginBottom: 20,
@@ -211,3 +226,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
