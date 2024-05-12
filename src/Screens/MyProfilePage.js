@@ -30,12 +30,13 @@ export default function MyProfilePage() {
   }, [email]); // Fetch rank when email changes
 
   useEffect(() => {
-    async function fetchEmail() {
+    async function fetchEmailAndUser() {
       try {
         const storedEmail = await AsyncStorage.getItem("email");
         if (storedEmail) {
           setEmail(storedEmail);
           console.log(`${storedEmail} logged in`);
+          // Fetch user information when email changes
           getUserFromFirestore(storedEmail);
         }
       } catch (error) {
@@ -43,8 +44,8 @@ export default function MyProfilePage() {
         alert("Error retrieving email from AsyncStorage:", error);
       }
     }
-    fetchEmail();
-  }, []); // Fetch email only once on component mount
+    fetchEmailAndUser();
+  }, [email]); // Fetch email and user when email changes
 
   const getUserFromFirestore = async (fncEmail) => {
     try {

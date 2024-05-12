@@ -25,7 +25,7 @@ export default function MainLoginPage({ navigation }) {
       navigation.navigate("HomePage");
     } catch (error) {
       if (error.response) {
-        alert(error.response.data.error);
+        alert("Invalid email/password, please try again!");
       } else if (error.request) {
         console.error(error.request);
       } else {

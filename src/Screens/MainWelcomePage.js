@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
-    elevation: 3, // Add shadow
+    elevation: 3,
   },
   buttonText: {
     color: "#fff",

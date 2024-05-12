@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  TouchableOpacity, // Import TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import config from "../Config/config";
 import axios from "axios";

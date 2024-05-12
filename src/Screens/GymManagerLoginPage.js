@@ -27,7 +27,7 @@ export default function GymManagerLoginPage({ navigation }) {
       navigation.navigate("GymManagerHomePage");
     } catch (error) {
       if (error.response) {
-        alert(error.response.data.error);
+        alert("Invalid email/password, please try again!");
       } else if (error.request) {
         console.error(error.request);
       } else {

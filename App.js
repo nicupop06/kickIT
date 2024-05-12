@@ -23,11 +23,31 @@ const Drawer = createDrawerNavigator();
 
 const HomeDrawer = () => (
   <Drawer.Navigator>
-    <Drawer.Screen name="Main Page" component={MainHomePage} />
-    <Drawer.Screen name="Profile" component={MyProfilePage} />
-    <Drawer.Screen name="Training Timer" component={TimerPage} />
-    <Drawer.Screen name="My Workouts" component={VideosPage} />
-    <Drawer.Screen name="Scan Gym QR" component={QRScannerPage} />
+    <Drawer.Screen
+      name="Main Page"
+      component={MainHomePage}
+      options={{ title: "Available gyms", headerTitleAlign: "center" }}
+    />
+    <Drawer.Screen
+      name="Profile"
+      component={MyProfilePage}
+      options={{ title: "Profile", headerTitleAlign: "center" }}
+    />
+    <Drawer.Screen
+      name="Training Timer"
+      component={TimerPage}
+      options={{ title: "Training timer", headerTitleAlign: "center" }}
+    />
+    <Drawer.Screen
+      name="My Workouts"
+      component={VideosPage}
+      options={{ title: "My Workouts", headerTitleAlign: "center" }}
+    />
+    <Drawer.Screen
+      name="Scan Gym QR"
+      component={QRScannerPage}
+      options={{ title: "Scan Gym QR", headerTitleAlign: "center" }}
+    />
   </Drawer.Navigator>
 );
 
@@ -41,13 +61,41 @@ const GymHomeDrawer = () => (
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator initialRouteName="WelcomePage">
-      <Stack.Screen name="WelcomePage" component={MainWelcomePage} />
-      <Stack.Screen name="LoginPage" component={MainLoginPage} />
-      <Stack.Screen name="SignupPage" component={MainSignupPage} />
-      <Stack.Screen name="GymLoginPage" component={GymManagerLoginPage} />
-      <Stack.Screen name="PaymentPage" component={StripePaymentPage} />
-      <Stack.Screen name="StatsPage" component={GymStatsPage} />
-      <Stack.Screen name="LogsPage" component={GymLogsPage} />
+      <Stack.Screen
+        name="WelcomePage"
+        component={MainWelcomePage}
+        options={{ title: "KickIT", headerTitleAlign: "center" }}
+      />
+      <Stack.Screen
+        name="LoginPage"
+        component={MainLoginPage}
+        options={{ title: "", headerTitleAlign: "center" }}
+      />
+      <Stack.Screen
+        name="SignupPage"
+        component={MainSignupPage}
+        options={{ title: "", headerTitleAlign: "center" }}
+      />
+      <Stack.Screen
+        name="GymLoginPage"
+        component={GymManagerLoginPage}
+        options={{ title: "Administrator Portal", headerTitleAlign: "center" }}
+      />
+      <Stack.Screen
+        name="PaymentPage"
+        component={StripePaymentPage}
+        options={{ title: "Pay with Stripe", headerTitleAlign: "center" }}
+      />
+      <Stack.Screen
+        name="StatsPage"
+        component={GymStatsPage}
+        options={{ title: "Statistics", headerTitleAlign: "center" }}
+      />
+      <Stack.Screen
+        name="LogsPage"
+        component={GymLogsPage}
+        options={{ title: "Administrator Logs", headerTitleAlign: "center" }}
+      />
       <Stack.Screen
         name="HomePage"
         component={HomeDrawer}
