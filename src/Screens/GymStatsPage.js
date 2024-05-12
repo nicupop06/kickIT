@@ -26,9 +26,8 @@ export default function GymStatsPage({ navigation, route }) {
       });
       if (response.data.paymentIntents) {
         setPaymentIntents(response.data.paymentIntents);
-        console.log(response.data.paymentIntents);
       } else {
-        console.log("No payment intents available");
+        alert("No payment intents available");
       }
       setLoading(false);
     }

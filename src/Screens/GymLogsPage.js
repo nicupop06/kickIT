@@ -37,6 +37,9 @@ export default function GymLogsPage({ route }) {
             <Text style={styles.logText}>
               Date: {new Date(paymentIntent.created * 1000).toLocaleString()}
             </Text>
+            <Text style={styles.logText}>
+              User: {paymentIntent.metadata.userEmail}
+            </Text>
           </View>
         ))}
       </View>

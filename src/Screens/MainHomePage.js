@@ -198,6 +198,7 @@ export default function MainHomePage({ navigation }) {
             coordinate={location.coords}
             title="You are here"
             description="Your current location"
+            tracksViewChanges={false}
           >
             <FontAwesomeIcon name="user" size={30} color="blue" />
           </Marker>
@@ -209,6 +210,7 @@ export default function MainHomePage({ navigation }) {
                   latitude: parseFloat(loc.coords.latitude),
                   longitude: parseFloat(loc.coords.longitude),
                 }}
+                tracksViewChanges={false}
                 title={loc.name}
               >
                 <MaterialCommunityIcons
