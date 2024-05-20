@@ -16,6 +16,7 @@ const config = {
     VIDEOS: "videos",
     PAYMENTS: "payments",
     USER_RANK: "user-rank",
+    REVIEW_ALLOWED: "review-allowed",
   },
   getRouteUrl(route) {
     return `${this.SERVER_BASE_URL}/${route}`;

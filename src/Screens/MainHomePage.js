@@ -49,8 +49,7 @@ export default function MainHomePage({ navigation }) {
       });
   }, [email]);
 
-  useEffect(() => {
-  }, [starRating, reviewText]);
+  useEffect(() => {}, [starRating, reviewText]);
 
   //Ask for map permissions in order to show it from where the user is
   useEffect(() => {
@@ -96,28 +95,36 @@ export default function MainHomePage({ navigation }) {
   };
 
   const handleCreateReview = async () => {
-    console.log(selectedGym);
     const reviewData = {
       name: user.firstName,
       stars: starRating,
-      gymId: selectedGym,
+      gymId: selectedGym.id,
       text: reviewText,
     };
-    const sendURL = config.getRouteUrl(config.SERVER_ROUTES.REVIEWS);
-    const response = await axios.post(sendURL, {
-      reviewData: reviewData,
+    const sendURL = config.getRouteUrl(config.SERVER_ROUTES.REVIEW_ALLOWED);
+    const response = await axios.get(sendURL, {
+      email: user.email,
+      gymName: selectedGym.name,
     });
-    alert("Thanks for the review!");
-    setReviewText("");
+
+    if (response.data.number === 0) {
+      alert("You can't leave a review if you never joined this gym. Sorry!");
+    } else {
+      sendURL = config.getRouteUrl(config.SERVER_ROUTES.REVIEWS);
+      response = await axios.post(sendURL, {
+        reviewData: reviewData,
+      });
+      alert("Thanks for the review!");
+      setReviewText("");
+    }
   };
 
-  const handleCalloutPress = async (gymId) => {
+  const handleCalloutPress = async (gym) => {
     // Fetch reviews from Firebase when callout is pressed
-    console.log("test");
-    setSelectedGym(gymId);
+    setSelectedGym(gym);
     setLoadingReviews(true);
     try {
-      const gymReviews = await fetchReviewsForGym(gymId);
+      const gymReviews = await fetchReviewsForGym(gym.id);
       setReviews(gymReviews.reviews);
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -221,7 +228,7 @@ export default function MainHomePage({ navigation }) {
                 />
                 <Callout
                   style={{ width: 120 }}
-                  onPress={() => handleCalloutPress(loc.id)}
+                  onPress={() => handleCalloutPress(loc)}
                 >
                   <View style={{ flex: 1 }}>
                     <Text style={{ fontWeight: "bold", textAlign: "center" }}>
