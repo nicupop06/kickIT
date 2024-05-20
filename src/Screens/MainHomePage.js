@@ -113,6 +113,7 @@ export default function MainHomePage({ navigation }) {
 
   const handleCalloutPress = async (gymId) => {
     // Fetch reviews from Firebase when callout is pressed
+    console.log("test");
     setSelectedGym(gymId);
     setLoadingReviews(true);
     try {
@@ -215,7 +216,7 @@ export default function MainHomePage({ navigation }) {
               >
                 <MaterialCommunityIcons
                   name="boxing-glove"
-                  size={30}
+                  size={35}
                   color={loc.type === "workout" ? "red" : "black"}
                 />
                 <Callout

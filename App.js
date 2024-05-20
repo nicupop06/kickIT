@@ -74,13 +74,6 @@ const App = () => (
         name="WelcomePage"
         component={MainWelcomePage}
         options={{
-          // headerTitle: (props) => (
-          //   <Image
-          //     style={{ width: 120, height: 50 }}
-          //     source={require("./src/Config/KickIT-logo.png")}
-          //     resizeMode="contain"
-          //   />
-          // ),
           title: "KickIT",
           headerTitleAlign: "center",
         }}

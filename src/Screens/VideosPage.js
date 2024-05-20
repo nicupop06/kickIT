@@ -27,8 +27,12 @@ export default function VideosPage() {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    getEmailFromStorage();
-    fetchVideos();
+    const fetchEmailAndVideos = async () => {
+      await getEmailFromStorage();
+      await fetchVideos();
+    };
+
+    fetchEmailAndVideos();
   }, [email]);
 
   const getEmailFromStorage = async () => {
@@ -45,15 +49,16 @@ export default function VideosPage() {
   };
 
   const fetchVideos = async () => {
+    if (!email) return;
     try {
       const sendURL = config.getRouteUrl(config.SERVER_ROUTES.VIDEOS);
       const response = await axios.get(sendURL, {
         params: { email: email },
       });
       setVideos(response.data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching videos:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -94,7 +99,7 @@ export default function VideosPage() {
   const uploadVideos = async () => {
     try {
       // Get the file URI
-      const fileUri = filePath.assets[0].uri;
+      const fileUri = filePath.uri;
 
       // Read the file from local filesystem using FileSystem module
       const fileInfo = await FileSystem.getInfoAsync(fileUri);
@@ -136,51 +141,49 @@ export default function VideosPage() {
   };
 
   return (
-    <>
-      <LinearGradient colors={["#4CAF50", "#2196F3"]} style={styles.gradient}>
-        <SafeAreaView style={{ flex: 1 }}>
-          <View style={styles.container}>
-            <Text>Choose Video</Text>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={styles.buttonStyle}
-              onPress={pickFiles}
-            >
-              <Text style={styles.buttonTextStyle}>Choose Video</Text>
-            </TouchableOpacity>
-            <Text>Video Name:</Text>
-            <TextInput
-              style={styles.input}
-              value={videoName}
-              onChangeText={setVideoName}
-              placeholder="Enter video name"
-            />
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              onPress={uploadVideos}
-            >
-              <Text style={styles.buttonTextStyle}>
-                Upload File on FireStorage
-              </Text>
-            </TouchableOpacity>
-
-            <Text style={{ marginTop: 20 }}>
-              Videos from Firebase Storage:
+    <LinearGradient colors={["#4CAF50", "#2196F3"]} style={styles.gradient}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <Text>Choose Video</Text>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.buttonStyle}
+            onPress={pickFiles}
+          >
+            <Text style={styles.buttonTextStyle}>Choose Video</Text>
+          </TouchableOpacity>
+          <Text>Video Name:</Text>
+          <TextInput
+            style={styles.input}
+            value={videoName}
+            onChangeText={setVideoName}
+            placeholder="Enter video name"
+          />
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={uploadVideos}
+          >
+            <Text style={styles.buttonTextStyle}>
+              Upload File on FireStorage
             </Text>
-            {loading ? (
-              <ActivityIndicator style={{ marginTop: 10 }} />
-            ) : (
-              <FlatList
-                data={videos}
-                renderItem={renderVideoItem}
-                keyExtractor={(item) => item.name}
-                style={{ marginTop: 10 }}
-              />
-            )}
-          </View>
-        </SafeAreaView>
-      </LinearGradient>
-    </>
+          </TouchableOpacity>
+
+          <Text style={{ marginTop: 20 }}>
+            Videos from Firebase Storage:
+          </Text>
+          {loading ? (
+            <ActivityIndicator style={{ marginTop: 10 }} />
+          ) : (
+            <FlatList
+              data={videos}
+              renderItem={renderVideoItem}
+              keyExtractor={(item) => item.name}
+              style={{ marginTop: 10 }}
+            />
+          )}
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
@@ -192,7 +195,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: "#f0f0f0",
     padding: 20,
     alignItems: "center",
   },

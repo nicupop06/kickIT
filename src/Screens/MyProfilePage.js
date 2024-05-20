@@ -8,25 +8,29 @@ import { LinearGradient } from "expo-linear-gradient";
 export default function MyProfilePage() {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
-  const [rank, setRank] = useState(-1);
-  const [noUsers, setNoUsers] = useState(-1);
+  const [rank, setRank] = useState(null);
+  const [noUsers, setNoUsers] = useState(null);
 
   useEffect(() => {
     async function fetchUserRank() {
-      const sendURL = config.getRouteUrl(config.SERVER_ROUTES.USER_RANK);
-      const response = await axios.get(sendURL, {
-        params: {
-          email: email,
-        },
-      });
-      if (response.data.rank >= 0 && response.data.noUsers >= 0) {
-        setRank(response.data.rank);
-        setNoUsers(response.data.noUsers);
-      } else {
-        console.log("Error receiving rank");
+      if (email) {
+        const sendURL = config.getRouteUrl(config.SERVER_ROUTES.USER_RANK);
+        try {
+          const response = await axios.get(sendURL, {
+            params: { email: email },
+          });
+          if (response.data.rank >= 0 && response.data.noUsers >= 0) {
+            setRank(response.data.rank);
+            setNoUsers(response.data.noUsers);
+            console.log(response.data.rank);
+          } else {
+            console.log("Error receiving rank");
+          }
+        } catch (error) {
+          console.error("Error fetching user rank:", error);
+        }
       }
     }
-
     fetchUserRank();
   }, [email]); // Fetch rank when email changes
 
@@ -37,7 +41,7 @@ export default function MyProfilePage() {
         if (storedEmail) {
           setEmail(storedEmail);
           console.log(`${storedEmail} logged in`);
-          // Fetch user information when email changes
+          // Fetch user information when email is retrieved
           getUserFromFirestore(storedEmail);
         }
       } catch (error) {
@@ -46,18 +50,16 @@ export default function MyProfilePage() {
       }
     }
     fetchEmailAndUser();
-  }, [email]); // Fetch email and user when email changes
+  }, []); // Fetch email and user once on mount
 
   const getUserFromFirestore = async (fncEmail) => {
     try {
       const sendURL = config.getRouteUrl(config.SERVER_ROUTES.USERS);
       const response = await axios.get(sendURL, {
-        params: {
-          email: fncEmail,
-        },
+        params: { email: fncEmail },
       });
       setUser(response.data.user);
-      AsyncStorage.setItem("user", JSON.stringify(response.data.user));
+      await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
     } catch (error) {
       console.error("Error getting user from Firestore:", error);
     }
@@ -66,7 +68,7 @@ export default function MyProfilePage() {
   return (
     <LinearGradient colors={["#4CAF50", "#2196F3"]} style={styles.gradient}>
       <View style={styles.container}>
-        {user && (
+        {user && rank !== null && noUsers !== null && (
           <>
             <View style={styles.profileHeader}>
               <Text style={styles.fullName}>
