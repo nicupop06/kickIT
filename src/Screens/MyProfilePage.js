@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   fullName: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#fff",
+    color: "black",
   },
   profileInfo: {
     flex: 1,
@@ -132,10 +132,10 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
     marginRight: 5,
-    color: "#fff",
+    color: "black",
   },
   value: {
     flexShrink: 1,
-    color: "#fff",
+    color: "black",
   },
 });

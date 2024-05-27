@@ -83,7 +83,6 @@ export default function VideosPage() {
       });
 
       if (fileDetails) {
-        console.log(fileDetails);
         setFilePath(fileDetails);
       } else {
         setFilePath({});
