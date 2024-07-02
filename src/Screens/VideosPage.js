@@ -98,7 +98,7 @@ export default function VideosPage() {
   const uploadVideos = async () => {
     try {
       // Get the file URI
-      const fileUri = filePath.uri;
+      const fileUri = filePath.assets[0].uri;
 
       // Read the file from local filesystem using FileSystem module
       const fileInfo = await FileSystem.getInfoAsync(fileUri);
